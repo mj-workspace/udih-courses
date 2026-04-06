@@ -28,8 +28,8 @@ export default function ResourceLink({ label, url, type = 'app' }) {
   return (
     <a
       href={url}
-      target={type === 'external' ? '_blank' : undefined}
-      rel={type === 'external' ? 'noopener noreferrer' : undefined}
+      target="_blank"
+      rel="noopener noreferrer"
       className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${typeStyles[type] || typeStyles.app}`}
     >
       {typeIcons[type]}

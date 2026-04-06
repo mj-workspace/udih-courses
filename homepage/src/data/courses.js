@@ -6,8 +6,18 @@ export const programs = [
       {
         id: 'digital-literacy',
         title: 'Въведение в дигиталната грамотност (Реф. № 001)',
-        description: null,
-        status: 'upcoming',
+        description:
+          'Курс по хардуер, операционни системи, мрежи, отстраняване на проблеми и основни ИТ операции.',
+        duration: '12 учебни часа (2 дни)',
+        format: 'Онлайн (Google Meet)',
+        level: 'Въвеждащо ниво',
+        status: 'active',
+        meetLink: {
+          url: 'https://udih.anis.bg/meet-digital-fundamentals',
+          directUrl: 'https://meet.google.com/ufr-gurh-enq',
+          dialIn: '+359 2 907 4373',
+          pin: '417 904 002#',
+        },
         modules: [],
         resources: [],
       },
@@ -21,13 +31,19 @@ export const programs = [
         format: 'Онлайн (Google Meet)',
         level: 'Въвеждащо ниво',
         status: 'active',
+        meetLink: {
+          url: 'https://udih.anis.bg/meet-cybersecurity',
+          directUrl: 'https://meet.google.com/jbp-arjq-hee',
+          dialIn: '+359 2 907 4778',
+          pin: '509 298 747#',
+        },
         modules: [
           { id: 1, title: 'Въведение в киберсигурността', duration: '50 мин' },
           { id: 2, title: 'Фишинг, злонамерен софтуер и онлайн измами', duration: '80 мин' },
-          { id: 3, title: 'Сигурност на пароли и автентикация', duration: '50 мін' },
-          { id: 4, title: 'Защита на личната информация и данни', duration: '70 мін' },
-          { id: 5, title: 'Мрежова сигурност и защита на инфраструктурата', duration: '90 мін' },
-          { id: 6, title: 'Политики, процедури и реакция при инциденти', duration: '80 мін' },
+          { id: 3, title: 'Сигурност на пароли и автентикация', duration: '50 мин' },
+          { id: 4, title: 'Защита на личната информация и данни', duration: '70 мин' },
+          { id: 5, title: 'Мрежова сигурност и защита на инфраструктурата', duration: '90 мин' },
+          { id: 6, title: 'Политики, процедури и реакция при инциденти', duration: '80 мин' },
         ],
         resources: [
           {

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import MeetInfo from './MeetInfo'
 import ResourceLink from './ResourceLink'
 
 export default function CourseCard({ course }) {
@@ -12,13 +13,13 @@ export default function CourseCard({ course }) {
           ? 'border-dashed border-green-200 bg-green-50/30'
           : expanded
             ? 'border-green-300 bg-white shadow-md shadow-green-100/50 ring-1 ring-green-100'
-            : 'border-green-100 bg-white shadow-sm hover:shadow-md hover:shadow-green-100/50 hover:border-green-200'
+            : 'border-green-100 bg-white shadow-sm hover:shadow-lg hover:shadow-green-100/80 hover:border-green-300 hover:-translate-y-0.5'
       }`}
     >
       <button
         onClick={() => !isUpcoming && setExpanded(!expanded)}
         disabled={isUpcoming}
-        className="w-full px-6 py-5 text-left"
+        className="w-full cursor-pointer px-6 py-5 text-left"
       >
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -30,7 +31,7 @@ export default function CourseCard({ course }) {
                 {course.description}
               </p>
             )}
-            {isUpcoming && (
+            {isUpcoming && !course.meetLink && (
               <p className="mt-1.5 text-sm italic text-green-400">Предстои</p>
             )}
           </div>
@@ -68,8 +69,20 @@ export default function CourseCard({ course }) {
         )}
       </button>
 
+      {isUpcoming && course.meetLink && (
+        <div className="px-6 pb-5">
+          <MeetInfo meetLink={course.meetLink} />
+        </div>
+      )}
+
       {expanded && (
         <div className="border-t border-green-100 px-6 py-5">
+          {course.meetLink && (
+            <div className="mb-5">
+              <MeetInfo meetLink={course.meetLink} />
+            </div>
+          )}
+
           {course.audience && (
             <p className="mb-4 text-sm text-green-800/70">
               <span className="font-semibold text-green-900">Аудитория:</span>{' '}
