@@ -26,7 +26,7 @@ export default function Header() {
         </div>
         <button
           onClick={handleLogout}
-          className="shrink-0 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur-sm transition-all hover:bg-white/20 hover:text-white"
+          className="shrink-0 cursor-pointer rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur-sm transition-all duration-200 hover:bg-white/25 hover:text-white hover:border-white/40 hover:shadow-lg hover:shadow-black/10 hover:scale-105 active:scale-95"
         >
           Изход
         </button>
