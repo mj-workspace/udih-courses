@@ -17,13 +17,6 @@ This is a **content repository** for a cybersecurity course ("Курс по ки
 
 All content is in **Bulgarian**. Technical terms use their English equivalents where standard (e.g., "phishing", "ransomware", "firewall", "CIA Triad"). Follow this bilingual convention when generating or editing content.
 
-## Repository Structure
-
-| File/Directory                 | Purpose                                                                          |
-| ------------------------------ | -------------------------------------------------------------------------------- |
-| `context/context.md`           | Interview synthesis — captures all decisions, constraints, and progress tracking |
-| `context/kriterii-za-kursa.md` | Original course criteria/requirements                                            |
-
 ## Course Structure — 6 Modules
 
 | Module  | Topic                                          | Duration |
