@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Входен изпит — Киберсигурност и защита на данните</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        /* Toolbar — hidden in print */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: #166534;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .toolbar-title {
+            margin-right: auto;
+            font-size: 15px;
+        }
+
+        .toolbar button {
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .btn-answers {
+            background: #fff;
+            color: #166534;
+        }
+        .btn-answers:hover { background: #dcfce7; }
+
+        .btn-clean {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+        }
+        .btn-clean:hover { background: rgba(255,255,255,0.25); }
+
+        /* Exam content */
+        .exam {
+            max-width: 210mm;
+            margin: 24px auto;
+            padding: 40px;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        /* Title */
+        .exam-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #166534;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .exam-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Participant info */
+        .participant-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .participant-field {
+            flex: 1;
+        }
+
+        .participant-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .participant-field .line {
+            border-bottom: 1px solid #cbd5e1;
+            height: 24px;
+        }
+
+        /* Instructions */
+        .instructions {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        /* Questions */
+        .question {
+            margin-bottom: 22px;
+            page-break-inside: avoid;
+        }
+
+        .question-text {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #166534;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .options {
+            list-style: none;
+            padding-left: 34px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .option-marker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .option-text {
+            font-size: 13px;
+            color: #475569;
+            padding-top: 1px;
+        }
+
+        /* Correct answer highlight */
+        .option.correct .option-marker {
+            background: #166534;
+            border-color: #166534;
+            color: #fff;
+        }
+        .option.correct .option-text {
+            color: #166534;
+            font-weight: 600;
+        }
+
+        /* Hide/show answers */
+        body:not(.show-answers) .option.correct .option-marker {
+            background: transparent;
+            border-color: #cbd5e1;
+            color: #94a3b8;
+        }
+        body:not(.show-answers) .option.correct .option-text {
+            color: #475569;
+            font-weight: 400;
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: #fff; }
+            .toolbar { display: none !important; }
+            .exam { margin: 0; padding: 0; box-shadow: none; }
+
+            @page {
+                size: A4;
+                margin: 18mm 15mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <span class="toolbar-title">Входен изпит — Киберсигурност</span>
+        <button class="btn-answers" onclick="toggleAnswers()">Покажи верните отговори</button>
+        <button class="btn-clean" onclick="printExam(false)">Свали PDF (без отговори)</button>
+        <button class="btn-answers" onclick="printExam(true)">Свали PDF (с отговори)</button>
+    </div>
+
+    <div class="exam">
+        <h1 class="exam-title">Входен изпит</h1>
+        <div class="exam-subtitle">Киберсигурност и защита на данните (Реф. № 011)</div>
+
+        <div class="participant-info">
+            <div class="participant-field">
+                <label>Име и фамилия</label>
+                <div class="line"></div>
+            </div>
+            <div class="participant-field" style="flex: 0.4;">
+                <label>Дата</label>
+                <div class="line"></div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            Отбележете верния отговор за всеки въпрос. Няма ограничение за време.
+        </div>
+
+        <!-- Въпрос 1 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">1</span>
+                Кое от следните описва най-точно трите стълба на информационната сигурност (CIA Triad)?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Криптиране, автентикация и авторизация</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Поверителност, цялостност и наличност</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Firewall, антивирус и VPN</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Превенция, откриване и реакция</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 2 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">2</span>
+                Кой от следните е най-типичен признак на фишинг имейл?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Имейлът е изпратен от колега, с когото работите ежедневно</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Имейлът съдържа спешно искане за действие и линк към непозната страница</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Имейлът е с прикачен PDF документ от познат подател</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Имейлът е получен в работно време и съдържа подпис на изпращача</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 3 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">3</span>
+                Коя от следните практики прави паролата най-сигурна?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Използване на рождената дата, защото лесно се помни</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Записване на паролата на лепящо бележче до монитора</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">Дълга фраза от несвързани думи, комбинирана с цифри и символи</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Една и съща сложна парола за всички акаунти</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 4 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">4</span>
+                Какво регламентира GDPR (General Data Protection Regulation)?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Стандарти за мрежово оборудване в държавни институции</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Защитата на личните данни на гражданите в Европейския съюз</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Правилата за използване на социални мрежи на работното място</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Лицензирането на софтуерни продукти в публичния сектор</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 5 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">5</span>
+                Коя е основната функция на firewall (защитна стена)?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Да ускорява интернет връзката</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Да криптира всички файлове на компютъра</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">Да контролира мрежовия трафик и да блокира неоторизиран достъп</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Да създава резервни копия на данните автоматично</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 6 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">6</span>
+                Каква е първата стъпка при съмнение за инцидент с информационната сигурност?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Да изтриете всички подозрителни файлове</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Да уведомите отговорното лице (IT отдел или пряк ръководител)</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Да изключите компютъра от контакта</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Да публикувате проблема в социалните мрежи за предупреждение</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswers() {
+            document.body.classList.toggle('show-answers');
+            const btn = document.querySelector('.btn-answers');
+            if (document.body.classList.contains('show-answers')) {
+                btn.textContent = 'Скрий верните отговори';
+            } else {
+                btn.textContent = 'Покажи верните отговори';
+            }
+        }
+
+        function printExam(withAnswers) {
+            if (withAnswers) {
+                document.body.classList.add('show-answers');
+            } else {
+                document.body.classList.remove('show-answers');
+            }
+            setTimeout(() => window.print(), 100);
+        }
+    </script>
+</body>
+</html>

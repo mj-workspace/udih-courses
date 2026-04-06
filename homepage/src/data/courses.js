@@ -51,6 +51,11 @@ export const programs = [
             url: '/udih-courses/cybersecurity/',
             type: 'app',
           },
+          {
+            label: 'Входен изпит',
+            url: '/udih-courses/cybersecurity/entry-exam.html',
+            type: 'document',
+          },
         ],
       },
     ],
