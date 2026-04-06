@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Монорепо за УДИХ (Университетска Дигитална Иновационна Хъб) курсове, организирани по програми.
+Монорепо за UDIH (Университетска Дигитална Иновационна Хъб) курсове, организирани по програми.
 
 **Организация:** Академия по национална и информационна сигурност
 
@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 udih-courses/
+├── homepage/                        # Портал (списък с курсове, защитен със StaticCrypt)
 ├── udih-2024-27/                    # Програма 2024–2027
 │   ├── cybersecurity-course/        # Курс по киберсигурност
 │   └── digital-fundamentals/        # (предстои)
@@ -30,6 +31,8 @@ Each course has its own CLAUDE.md with course-specific context, structure, and c
 
 All content is in **Bulgarian**. Technical terms use English equivalents where standard.
 
+**UDIH** is always written in English as **UDIH** (University Digital Innovation Hub). Never use the Bulgarian transliteration "UDIH" — UDIH is a proper term/brand name and must remain in Latin script everywhere (code, UI, docs, comments).
+
 ## Hosting & Deployment
 
 **Monorepo** hosted at `mj-workspace/udih-courses` (public) on GitHub.
@@ -40,9 +43,10 @@ All content is in **Bulgarian**. Technical terms use English equivalents where s
 
 **Currently deployed apps:**
 
-| Course | App | URL |
-|--------|-----|-----|
-| cybersecurity-course | lecturer-guide | `/udih-courses/cybersecurity/` |
+| App | Course | URL |
+|-----|--------|-----|
+| homepage | (портал) | `/udih-courses/` |
+| lecturer-guide | cybersecurity-course | `/udih-courses/cybersecurity/` |
 
 ### Adding a new deployed app
 

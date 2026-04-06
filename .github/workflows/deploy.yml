@@ -22,21 +22,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: udih-2024-27/cybersecurity-course/lecturer-guide/package-lock.json
+          cache: pnpm
+          cache-dependency-path: |
+            homepage/pnpm-lock.yaml
+            udih-2024-27/cybersecurity-course/lecturer-guide/pnpm-lock.yaml
+
+      - name: Build homepage
+        working-directory: homepage
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.HOMEPAGE_PASSWORD }}
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build:encrypt
 
       - name: Build cybersecurity lecturer-guide
         working-directory: udih-2024-27/cybersecurity-course/lecturer-guide
         run: |
-          npm install
-          npm run build
+          pnpm install --frozen-lockfile
+          pnpm run build
 
       - name: Assemble site
         run: |
           mkdir -p _site
+          cp -r homepage/dist/* _site/
           cp -r udih-2024-27/cybersecurity-course/lecturer-guide/dist _site/cybersecurity
 
       - uses: actions/configure-pages@v5
