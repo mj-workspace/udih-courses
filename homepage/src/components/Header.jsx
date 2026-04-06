@@ -6,20 +6,27 @@ function handleLogout() {
 
 export default function Header() {
   return (
-    <header className="bg-slate-800 text-white">
-      <div className="mx-auto max-w-4xl px-6 py-8 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            UDIH Курсове
-          </h1>
-          <p className="mt-2 text-slate-300">
-            University Digital Innovation Hub — Академия по национална и
-            информационна сигурност
-          </p>
+    <header className="bg-gradient-to-r from-green-800 via-green-900 to-green-800 text-white shadow-lg">
+      <div className="mx-auto max-w-5xl px-6 py-6 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm">
+            <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
+              <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" fill="rgba(255,255,255,0.9)"/>
+              <path d="M10 12l2 2 4-4" stroke="#166534" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
+              UDIH <span className="font-normal opacity-80">Курсове</span>
+            </h1>
+            <p className="text-xs text-green-200/70 hidden sm:block">
+              University Digital Innovation Hub
+            </p>
+          </div>
         </div>
         <button
           onClick={handleLogout}
-          className="shrink-0 rounded-md border border-slate-600 px-3 py-1.5 text-sm text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+          className="shrink-0 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur-sm transition-all hover:bg-white/20 hover:text-white"
         >
           Изход
         </button>
