@@ -37,6 +37,47 @@ All content is in **Bulgarian**. Technical terms use their English equivalents w
 
 **Teaching:** 420 min (7h) | **Final exam:** 120 min (2h)
 
+## Hosting & Deployment
+
+**Monorepo** hosted at `mj-workspace/cybersecurity-course` (public) on GitHub.
+
+- **GitHub Pages:** auto-deploy on push to `main` via `.github/workflows/deploy.yml`
+- **Live URL:** https://mj-workspace.github.io/cybersecurity-course/
+- **Currently deployed:** only `lecturer-guide/` (at the root of Pages)
+
+### When adding `course-presentation/` (second React app)
+
+The repo is designed as a monorepo that will host two React apps. When the second app is added, these changes are needed:
+
+1. **`lecturer-guide/vite.config.js`** — change `base` from `'/cybersecurity-course/'` to `'/cybersecurity-course/lecturer-guide/'`
+2. **`course-presentation/vite.config.js`** — set `base: '/cybersecurity-course/presentation/'`
+3. **`.github/workflows/deploy.yml`** — update to build both apps and assemble a combined output:
+   ```yaml
+   - name: Build lecturer-guide
+     working-directory: lecturer-guide
+     run: npm install && npm run build
+
+   - name: Build course-presentation
+     working-directory: course-presentation
+     run: npm install && npm run build
+
+   - name: Assemble site
+     run: |
+       mkdir -p _site
+       cp -r lecturer-guide/dist _site/lecturer-guide
+       cp -r course-presentation/dist _site/presentation
+       # Optional: add a root index.html with links to both apps
+
+   - uses: actions/upload-pages-artifact@v3
+     with:
+       path: _site
+   ```
+4. **Root `index.html`** (optional) — create a simple landing page at the root with links to both apps
+
+**Result URLs:**
+- `mj-workspace.github.io/cybersecurity-course/lecturer-guide/`
+- `mj-workspace.github.io/cybersecurity-course/presentation/`
+
 ## Key Constraints
 
 - **SCADA/ICS is explicitly excluded** — separate course, not our scope
