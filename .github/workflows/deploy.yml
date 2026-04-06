@@ -26,19 +26,24 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: lecturer-guide/package-lock.json
+          cache-dependency-path: udih-2024-27/cybersecurity-course/lecturer-guide/package-lock.json
 
-      - name: Install and build
-        working-directory: lecturer-guide
+      - name: Build cybersecurity lecturer-guide
+        working-directory: udih-2024-27/cybersecurity-course/lecturer-guide
         run: |
           npm install
           npm run build
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r udih-2024-27/cybersecurity-course/lecturer-guide/dist _site/cybersecurity
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: lecturer-guide/dist
+          path: _site
 
       - id: deployment
         uses: actions/deploy-pages@v4
