@@ -5,4 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base: '/udih-courses/',
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/udih-courses/cybersecurity': 'http://localhost:5174',
+    },
+  },
 })
