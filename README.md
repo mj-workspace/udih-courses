@@ -13,7 +13,7 @@
 | Курс | Описание | Приложения |
 |------|----------|------------|
 | [Въведение в дигиталната грамотност](udih-2024-27/digital-fundamentals/) (Реф. № 001) | Хардуер, операционни системи, мрежи, отстраняване на проблеми (12 уч. часа) | — |
-| [Киберсигурност и защита на данните](udih-2024-27/cybersecurity-course/) (Реф. № 011) | Фишинг, пароли, защита на данни, мрежова сигурност (12 уч. часа) | [Ръководство за лектора](https://mj-workspace.github.io/udih-courses/cybersecurity/) |
+| [Киберсигурност и защита на данните](udih-2024-27/cybersecurity-course/) (Реф. № 011) | Фишинг, пароли, защита на данни, мрежова сигурност (12 уч. часа) | [Ръководство за лектора](https://mj-workspace.github.io/udih-courses/cybersecurity-lecturer-guide/) |
 
 ### UDIH 2027–2030
 
@@ -37,6 +37,6 @@ Auto-deploy на push to `main` чрез GitHub Actions → GitHub Pages.
 | App | URL |
 |-----|-----|
 | Портал (homepage) | [/udih-courses/](https://mj-workspace.github.io/udih-courses/) |
-| Ръководство за лектора — Киберсигурност | [/udih-courses/cybersecurity/](https://mj-workspace.github.io/udih-courses/cybersecurity/) |
+| Ръководство за лектора — Киберсигурност | [/udih-courses/cybersecurity-lecturer-guide/](https://mj-workspace.github.io/udih-courses/cybersecurity-lecturer-guide/) |
 
 **Tech stack:** React 19 + Vite 8 + Tailwind CSS 4, pnpm, StaticCrypt за защита на портала.

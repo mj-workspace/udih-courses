@@ -34,6 +34,6 @@ All content is in **Bulgarian**. Technical terms use their English equivalents w
 
 - **SCADA/ICS is explicitly excluded** — separate course, not our scope
 - Water utility (ВиК) specifics are covered at introductory/general level only
-- The exam is for a state-mandated training — everyone must pass, so questions are intentionally easy
+- The exam is for a state-mandated training — 24 questions, 4 answer options with 1 correct, medium to hard difficulty
 - Practical exercises/demos are desirable but not mandatory
 - The lecturer's guide follows a consistent format per section: **Ключови тези** (what to say), **Примери** (real-world examples), **ПРЕХОД →** (transition notes)

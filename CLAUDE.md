@@ -46,7 +46,8 @@ All content is in **Bulgarian**. Technical terms use English equivalents where s
 | App | Course | URL |
 |-----|--------|-----|
 | homepage | (портал) | `/udih-courses/` |
-| lecturer-guide | cybersecurity-course | `/udih-courses/cybersecurity/` |
+| lecturer-guide | cybersecurity-course | `/udih-courses/cybersecurity-lecturer-guide/` |
+| presentation | cybersecurity-course | `/udih-courses/cybersecurity-presentation/` |
 
 ### Adding a new deployed app
 
