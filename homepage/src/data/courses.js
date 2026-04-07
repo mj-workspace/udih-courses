@@ -209,17 +209,17 @@ export const programs = [
         resources: [
           {
             label: 'Входен изпит',
-            url: '/cybersecurity-lecturer-guide/entry-exam.html',
+            url: '/cybersecurity/entry-exam/',
             type: 'document',
           },
           {
             label: 'Презентация',
-            url: '/cybersecurity-presentation/',
+            url: '/cybersecurity/presentation/',
             type: 'presentation',
           },
           {
             label: 'Ръководство за лектора',
-            url: '/cybersecurity-lecturer-guide/',
+            url: '/cybersecurity/lecturer-guide/',
             type: 'app',
           },
         ],

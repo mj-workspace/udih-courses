@@ -59,8 +59,11 @@ jobs:
         run: |
           mkdir -p _site
           cp -r homepage/dist/* _site/
-          cp -r udih-2024-27/cybersecurity-course/lecturer-guide/dist _site/cybersecurity-lecturer-guide
-          cp -r udih-2024-27/cybersecurity-course/presentation/dist _site/cybersecurity-presentation
+          mkdir -p _site/cybersecurity
+          cp -r udih-2024-27/cybersecurity-course/lecturer-guide/dist _site/cybersecurity/lecturer-guide
+          cp -r udih-2024-27/cybersecurity-course/presentation/dist _site/cybersecurity/presentation
+          mkdir -p _site/cybersecurity/entry-exam
+          cp udih-2024-27/cybersecurity-course/lecturer-guide/dist/entry-exam.html _site/cybersecurity/entry-exam/index.html
           cp -r cyber-demo _site/cyber-demo
 
           # Meet redirects

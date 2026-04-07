@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/cybersecurity-presentation': 'http://localhost:5175',
-      '/cybersecurity-lecturer-guide': 'http://localhost:5174',
+      '/cybersecurity/presentation': 'http://localhost:5175',
+      '/cybersecurity/lecturer-guide': 'http://localhost:5174',
     },
   },
 })

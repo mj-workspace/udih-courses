@@ -39,15 +39,16 @@ All content is in **Bulgarian**. Technical terms use English equivalents where s
 
 - **GitHub Pages:** auto-deploy on push to `main` via `.github/workflows/deploy.yml`
 - **Custom domain:** https://udih.anis.bg/
-- **URL scheme:** flat, by course name (not by program directory)
+- **URL scheme:** `/<course>/<app>/` (grouped by course)
 
 **Currently deployed apps:**
 
 | App | Course | URL |
 |-----|--------|-----|
 | homepage | (портал) | `/` |
-| lecturer-guide | cybersecurity-course | `/cybersecurity-lecturer-guide/` |
-| presentation | cybersecurity-course | `/cybersecurity-presentation/` |
+| entry-exam | cybersecurity-course | `/cybersecurity/entry-exam/` |
+| presentation | cybersecurity-course | `/cybersecurity/presentation/` |
+| lecturer-guide | cybersecurity-course | `/cybersecurity/lecturer-guide/` |
 
 ### Adding a new deployed app
 
