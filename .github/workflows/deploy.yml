@@ -63,6 +63,11 @@ jobs:
           cp -r udih-2024-27/cybersecurity-course/presentation/dist _site/cybersecurity-presentation
           cp -r cyber-demo _site/cyber-demo
 
+          # Meet redirects
+          mkdir -p _site/meet-cybersecurity _site/meet-digital-fundamentals
+          echo '<meta http-equiv="refresh" content="0;url=https://meet.google.com/jbp-arjq-hee">' > _site/meet-cybersecurity/index.html
+          echo '<meta http-equiv="refresh" content="0;url=https://meet.google.com/ufr-gurh-enq">' > _site/meet-digital-fundamentals/index.html
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
