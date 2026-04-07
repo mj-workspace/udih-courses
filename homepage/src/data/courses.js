@@ -11,6 +11,15 @@ export const programs = [
         duration: '12 учебни часа (2 дни)',
         format: 'Онлайн (Google Meet)',
         level: 'Въвеждащо ниво',
+        audience: 'Служители на ВиК дружество (25–30 участника)',
+        qualification: 'Никаква компютърна',
+        totalTeachingMinutes: 600,
+        examDuration: '120 мин (2 часа)',
+        breaks: {
+          short: { count: 4, minutes: 15 },
+          lunch: { count: 2, minutes: 60 },
+          totalMinutes: 180,
+        },
         status: 'active',
         meetLink: {
           url: 'https://udih.anis.bg/meet-digital-fundamentals',
@@ -18,7 +27,63 @@ export const programs = [
           dialIn: '+359 2 907 4373',
           pin: '417 904 002#',
         },
-        modules: [],
+        preparation: [
+          {
+            title: 'Относно онлайн срещата в Google Meet',
+            items: [
+              'Информация за линка на срещата има по-горе, той се предоставя на организаторите',
+              'Линка за срещата се разпространява от организаторите на UDIH',
+              'Срещата се стартира минимум 15 мин по-рано от обявеното началото',
+            ],
+          },
+          {
+            title: 'Относно записа в Google Meet',
+            items: [
+              'Записът от курсовете ще се запише в **My Drive → Meet Recordings**',
+              'Отнема от 15 минути до 2–3 дена след края на записа в зависимост от размера',
+              'Записът трябва да бъде преименуван в този формат: **Ден 1 (2026-01-08 08:06 GMT)**',
+              'Трябва да бъде преместен в **Курс (Въведение в дигиталната грамотност) → Издание ...**',
+              'Трябва да бъде споделен на организаторите на UDIH',
+            ],
+          },
+          {
+            title: 'Относно провеждане на финалния изпит',
+            items: [
+              'Направи копие на: **Изпит по "Въведение в дигиталната грамотност"**',
+              'Премести копието в директорията на конкретното издание на курса',
+              'Преименувай копието, като изтриеш **"Copy of "**',
+              'Отвори google forms изпита и вземи линка за споделяне от иконката горе в дясно',
+              'Линка ще започне да работи след като публикуваш изпита от бутона **Publish**',
+              'След като изпита е публикуван от **Published** можеш да прекратиш приемането на отговори',
+              'След ръчна забрана за приемане на отзиви, може да се добави съобщение',
+              'Съобщение при приключил изпит: **"Изпитът приключи, резултатите се обработват"**',
+              'Може да се забранява и разрешава приемането на отговори многократно',
+              'От секцията **Responses** чрез бутона **"Link to Sheets"** се генерира Google Sheets файл с резултатите',
+              'Генерирания Google Sheets файл с резултатите от изпита се създава в същата директория в която е и изпита',
+            ],
+          },
+          {
+            title: 'Структура на Google Drive (admin@meet.anis.bg)',
+            tree: [
+              { name: 'My Drive/', comment: null, children: [
+                { name: 'Meet Recordings/', comment: 'Записи от Google Meet срещи' },
+                { name: 'Курс (Въведение в дигиталната грамотност)', comment: 'Главна директория на курса', children: [
+                  { name: 'Издание 1 / Януари 2026', comment: 'Конкретно издание на курса', children: [
+                    { name: 'Ден 1 (2026-01-08 08:06 GMT)', comment: 'Запис от Ден 1 на курса' },
+                    { name: 'Ден 2 (2026-01-09 08:06 GMT)', comment: 'Запис от Ден 2 на курса' },
+                    { name: 'Изпит по "Въведение в дигиталната грамотност"', comment: 'Финаления изпит с резултатите' },
+                  ]},
+                  { name: 'Издание 2 / Февруари 2026', comment: 'Конкретно издание на курса' },
+                  { name: '...', comment: null },
+                  { name: 'Издание X / Март 2027', comment: 'Конкретно издание на курса' },
+                  { name: 'Учебни материали', comment: 'Учебни материали за споделяне с курсистите' },
+                  { name: 'Изпит по "Въведение в дигиталната грамотност"', comment: 'Примерен финален изпит Google Forms' },
+                ]},
+              ]},
+            ],
+          },
+        ],
+        schedule: [],
         resources: [],
       },
       {
@@ -47,6 +112,14 @@ export const programs = [
         },
         preparation: [
           {
+            title: 'Относно онлайн срещата в Google Meet',
+            items: [
+              'Информация за линка на срещата има по-горе, той се предоставя на организаторите',
+              'Линка за срещата се разпространява от организаторите на UDIH',
+              'Срещата се стартира минимум 15 мин по-рано от обявеното началото',
+            ],
+          },
+          {
             title: 'Относно записа в Google Meet',
             items: [
               'Записът от курсовете ще се запише в **My Drive → Meet Recordings**',
@@ -73,7 +146,7 @@ export const programs = [
             ],
           },
           {
-            title: 'Структура на Google Drive',
+            title: 'Структура на Google Drive (admin@meet.anis.bg)',
             tree: [
               { name: 'My Drive/', comment: null, children: [
                 { name: 'Meet Recordings/', comment: 'Записи от Google Meet срещи' },
@@ -136,17 +209,17 @@ export const programs = [
         resources: [
           {
             label: 'Входен изпит',
-            url: '/udih-courses/cybersecurity/entry-exam.html',
+            url: '/udih-courses/cybersecurity-lecturer-guide/entry-exam.html',
             type: 'document',
           },
           {
             label: 'Презентация',
-            url: null,
-            type: 'disabled',
+            url: '/udih-courses/cybersecurity-presentation/',
+            type: 'presentation',
           },
           {
             label: 'Ръководство за лектора',
-            url: '/udih-courses/cybersecurity/',
+            url: '/udih-courses/cybersecurity-lecturer-guide/',
             type: 'app',
           },
         ],

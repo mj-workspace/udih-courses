@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/udih-courses/cybersecurity': 'http://localhost:5174',
+      '/udih-courses/cybersecurity-presentation': 'http://localhost:5175',
+      '/udih-courses/cybersecurity-lecturer-guide': 'http://localhost:5174',
     },
   },
 })

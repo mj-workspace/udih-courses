@@ -177,8 +177,8 @@ export default function CourseCard({ course }) {
                     <a
                       key={r.url}
                       href={r.url}
-                      target={r.type === 'external' ? '_blank' : '_self'}
-                      rel={r.type === 'external' ? 'noopener noreferrer' : undefined}
+                      target={r.type === 'external' || r.type === 'presentation' ? '_blank' : '_self'}
+                      rel={r.type === 'external' || r.type === 'presentation' ? 'noopener noreferrer' : undefined}
                       onClick={(e) => e.stopPropagation()}
                       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${
                         r.type === 'app'
