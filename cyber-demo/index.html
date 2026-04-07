@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDIH — Добре дошли</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 440px;
+      width: 100%;
+      padding: 24px;
+    }
+
+    /* Loading state */
+    .loader {
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #1e293b;
+      border-top-color: #ef4444;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader p { color: #64748b; font-size: 14px; }
+
+    /* Results */
+    .results { display: none; }
+    .results.visible { display: block; }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .shield {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ef4444;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 14px;
+      background: #111827;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: reveal 0.35s ease-out forwards;
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+
+    .info-value {
+      font-size: 14px;
+      color: #f1f5f9;
+      font-weight: 500;
+      text-align: right;
+      word-break: break-word;
+    }
+
+    .warning {
+      text-align: center;
+      padding: 18px;
+      background: linear-gradient(135deg, #1a0505, #150a0a);
+      border: 1px solid #7f1d1d;
+      border-radius: 12px;
+      opacity: 0;
+      animation: reveal 0.5s ease-out 2.5s forwards;
+    }
+
+    .warning p {
+      font-size: 14px;
+      color: #fca5a5;
+      line-height: 1.5;
+    }
+
+    .warning strong {
+      color: #ef4444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      opacity: 0;
+      animation: reveal 0.5s ease-out 3s forwards;
+    }
+
+    .footer p {
+      font-size: 11px;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Loading -->
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <p>Зареждане...</p>
+    </div>
+
+    <!-- Results -->
+    <div class="results" id="results">
+      <div class="header">
+        <div class="shield">&#128274;</div>
+        <h1>Вече знаем за теб:</h1>
+        <p>Само от едно сканиране на QR код</p>
+      </div>
+
+      <ul class="info-list" id="info-list"></ul>
+
+      <div class="warning">
+        <p>
+          Помисли преди да сканираш следващия QR код.
+          <br>
+          <strong>Киберсигурността започва от теб.</strong>
+        </p>
+      </div>
+
+      <div class="footer">
+        <p>UDIH — Курс по киберсигурност и защита на данните</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function parseUserAgent() {
+      const ua = navigator.userAgent;
+      let device = 'Неизвестно';
+      let os = 'Неизвестна';
+      let browser = 'Неизвестен';
+
+      // Device
+      if (/iPhone/.test(ua)) {
+        device = 'iPhone';
+      } else if (/iPad/.test(ua)) {
+        device = 'iPad';
+      } else if (/Samsung|SM-/.test(ua)) {
+        const m = ua.match(/SM-[A-Z0-9]+/);
+        device = m ? `Samsung ${m[0]}` : 'Samsung';
+      } else if (/Pixel/.test(ua)) {
+        const m = ua.match(/Pixel\s?[\w\s]*/);
+        device = m ? m[0].trim() : 'Google Pixel';
+      } else if (/Huawei|HUAWEI/.test(ua)) {
+        device = 'Huawei';
+      } else if (/Xiaomi|Redmi|POCO/.test(ua)) {
+        device = ua.match(/Xiaomi|Redmi\s?\w+|POCO\s?\w+/)?.[0] || 'Xiaomi';
+      } else if (/Android/.test(ua)) {
+        device = 'Android устройство';
+      } else if (/Macintosh/.test(ua)) {
+        device = 'Mac';
+      } else if (/Windows/.test(ua)) {
+        device = 'Windows PC';
+      } else if (/Linux/.test(ua)) {
+        device = 'Linux PC';
+      }
+
+      // OS
+      if (/iPhone OS|CPU OS/.test(ua)) {
+        const v = ua.match(/(?:iPhone OS|CPU OS)\s([\d_]+)/);
+        os = `iOS ${v ? v[1].replace(/_/g, '.') : ''}`;
+      } else if (/Android\s([\d.]+)/.test(ua)) {
+        os = `Android ${RegExp.$1}`;
+      } else if (/Windows NT\s([\d.]+)/.test(ua)) {
+        const ver = { '10.0': '10/11', '6.3': '8.1', '6.2': '8', '6.1': '7' };
+        os = `Windows ${ver[RegExp.$1] || RegExp.$1}`;
+      } else if (/Mac OS X\s([\d_.]+)/.test(ua)) {
+        os = `macOS ${RegExp.$1.replace(/_/g, '.')}`;
+      } else if (/Linux/.test(ua)) {
+        os = 'Linux';
+      }
+
+      // Browser
+      if (/CriOS\/([\d.]+)/.test(ua)) {
+        browser = `Chrome ${RegExp.$1}`;
+      } else if (/Chrome\/([\d.]+)/.test(ua) && !/Edg/.test(ua)) {
+        browser = `Chrome ${RegExp.$1.split('.')[0]}`;
+      } else if (/Safari\/([\d.]+)/.test(ua) && /Version\/([\d.]+)/.test(ua)) {
+        browser = `Safari ${RegExp.$1}`;
+      } else if (/Firefox\/([\d.]+)/.test(ua)) {
+        browser = `Firefox ${RegExp.$1}`;
+      } else if (/Edg\/([\d.]+)/.test(ua)) {
+        browser = `Edge ${RegExp.$1.split('.')[0]}`;
+      }
+
+      return { device, os, browser };
+    }
+
+    async function collectInfo() {
+      const items = [];
+      const { device, os, browser } = parseUserAgent();
+
+      // IP + location
+      try {
+        const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
+        const data = await resp.json();
+        items.push({ label: 'IP адрес', value: data.ip });
+        if (data.city && data.country_name) {
+          items.push({ label: 'Локация', value: `${data.city}, ${data.country_name}` });
+        }
+        if (data.org) {
+          items.push({ label: 'Доставчик', value: data.org });
+        }
+      } catch {
+        items.push({ label: 'IP адрес', value: 'Засечен (API лимит)' });
+      }
+
+      items.push({ label: 'Устройство', value: device });
+      items.push({ label: 'Операц. система', value: os });
+      items.push({ label: 'Браузър', value: browser });
+      items.push({ label: 'Екран', value: `${screen.width} × ${screen.height} px` });
+      items.push({ label: 'Език', value: navigator.language || 'Неизвестен' });
+      items.push({ label: 'Платформа', value: navigator.platform || 'Неизвестна' });
+
+      // Battery
+      if (navigator.getBattery) {
+        try {
+          const bat = await navigator.getBattery();
+          items.push({
+            label: 'Батерия',
+            value: `${Math.round(bat.level * 100)}%${bat.charging ? ' (зарежда се)' : ''}`
+          });
+        } catch {}
+      }
+
+      // Connection
+      if (navigator.connection) {
+        const c = navigator.connection;
+        const type = c.effectiveType ? c.effectiveType.toUpperCase() : '';
+        items.push({ label: 'Мрежа', value: type || 'Неизвестна' });
+      }
+
+      // Cores
+      if (navigator.hardwareConcurrency) {
+        items.push({ label: 'CPU ядра', value: `${navigator.hardwareConcurrency}` });
+      }
+
+      // RAM (Chrome only)
+      if (navigator.deviceMemory) {
+        items.push({ label: 'RAM', value: `~${navigator.deviceMemory} GB` });
+      }
+
+      // Touch
+      items.push({
+        label: 'Тъчскрийн',
+        value: navigator.maxTouchPoints > 0 ? `Да (${navigator.maxTouchPoints} точки)` : 'Не'
+      });
+
+      items.push({
+        label: 'Час на сканиране',
+        value: new Date().toLocaleTimeString('bg-BG')
+      });
+
+      return items;
+    }
+
+    async function init() {
+      const items = await collectInfo();
+
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('results').classList.add('visible');
+
+      const list = document.getElementById('info-list');
+      items.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.className = 'info-item';
+        li.style.animationDelay = `${i * 0.12}s`;
+        li.innerHTML = `
+          <span class="info-label">${item.label}</span>
+          <span class="info-value">${item.value}</span>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
