@@ -38,20 +38,20 @@ All content is in **Bulgarian**. Technical terms use English equivalents where s
 **Monorepo** hosted at `mj-workspace/udih-courses` (public) on GitHub.
 
 - **GitHub Pages:** auto-deploy on push to `main` via `.github/workflows/deploy.yml`
-- **Base URL:** https://mj-workspace.github.io/udih-courses/
+- **Custom domain:** https://udih.anis.bg/
 - **URL scheme:** flat, by course name (not by program directory)
 
 **Currently deployed apps:**
 
 | App | Course | URL |
 |-----|--------|-----|
-| homepage | (портал) | `/udih-courses/` |
-| lecturer-guide | cybersecurity-course | `/udih-courses/cybersecurity-lecturer-guide/` |
-| presentation | cybersecurity-course | `/udih-courses/cybersecurity-presentation/` |
+| homepage | (портал) | `/` |
+| lecturer-guide | cybersecurity-course | `/cybersecurity-lecturer-guide/` |
+| presentation | cybersecurity-course | `/cybersecurity-presentation/` |
 
 ### Adding a new deployed app
 
 1. Add build step in `.github/workflows/deploy.yml` (follow existing pattern)
 2. Add assemble step: `cp -r <build-output> _site/<short-name>/`
-3. Set `base: '/udih-courses/<short-name>/'` in the app's `vite.config.js`
+3. Set `base: '/<short-name>/'` in the app's `vite.config.js`
 4. Update this table

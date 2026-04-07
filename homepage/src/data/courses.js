@@ -209,17 +209,17 @@ export const programs = [
         resources: [
           {
             label: 'Входен изпит',
-            url: '/udih-courses/cybersecurity-lecturer-guide/entry-exam.html',
+            url: '/cybersecurity-lecturer-guide/entry-exam.html',
             type: 'document',
           },
           {
             label: 'Презентация',
-            url: '/udih-courses/cybersecurity-presentation/',
+            url: '/cybersecurity-presentation/',
             type: 'presentation',
           },
           {
             label: 'Ръководство за лектора',
-            url: '/udih-courses/cybersecurity-lecturer-guide/',
+            url: '/cybersecurity-lecturer-guide/',
             type: 'app',
           },
         ],

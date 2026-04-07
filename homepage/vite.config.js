@@ -3,12 +3,12 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/udih-courses/',
+  base: '/',
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      '/udih-courses/cybersecurity-presentation': 'http://localhost:5175',
-      '/udih-courses/cybersecurity-lecturer-guide': 'http://localhost:5174',
+      '/cybersecurity-presentation': 'http://localhost:5175',
+      '/cybersecurity-lecturer-guide': 'http://localhost:5174',
     },
   },
 })

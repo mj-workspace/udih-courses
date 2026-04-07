@@ -1,7 +1,7 @@
 import { QRCodeSVG } from 'qrcode.react'
 
 const base = import.meta.env.BASE_URL
-const DEMO_URL = 'https://mj-workspace.github.io/udih-courses/cyber-demo/'
+const DEMO_URL = 'https://udih.anis.bg/cyber-demo/'
 
 function LecturerCard({ avatar, name, role, expertise, bio }) {
   return (
