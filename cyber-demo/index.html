@@ -15,7 +15,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      padding: 24px 0;
     }
 
     .container {
@@ -70,6 +70,54 @@
       color: #64748b;
     }
 
+    /* Location hero */
+    .location-hero {
+      text-align: center;
+      padding: 20px 16px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #0f1a2e, #1a0d1e);
+      border: 1px solid #1e3a5f;
+      border-radius: 14px;
+      opacity: 0;
+      animation: reveal 0.6s ease-out 0.3s forwards;
+    }
+
+    .location-hero .loc-label {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .location-hero .loc-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.4;
+    }
+
+    .location-hero .loc-text .country {
+      color: #60a5fa;
+    }
+
+    .location-hero .loc-text .city {
+      color: #ef4444;
+    }
+
+    .location-hero .loc-coords {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #475569;
+      font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    }
+
+    .location-hero .loc-coords a {
+      color: #475569;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     .info-list {
       list-style: none;
       display: flex;
@@ -91,6 +139,15 @@
       animation: reveal 0.35s ease-out forwards;
     }
 
+    .info-item.danger {
+      border-color: #7f1d1d;
+      background: #1a0808;
+    }
+
+    .info-item.danger .info-value {
+      color: #fca5a5;
+    }
+
     @keyframes reveal {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -100,7 +157,7 @@
       color: #64748b;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      min-width: 90px;
+      min-width: 100px;
       flex-shrink: 0;
     }
 
@@ -112,6 +169,45 @@
       word-break: break-word;
     }
 
+    /* Gyroscope live section */
+    .gyro-section {
+      margin-bottom: 20px;
+      padding: 14px;
+      background: #1a0808;
+      border: 1px solid #7f1d1d;
+      border-radius: 12px;
+      text-align: center;
+      opacity: 0;
+      animation: reveal 0.5s ease-out forwards;
+    }
+
+    .gyro-section .gyro-title {
+      font-size: 12px;
+      color: #ef4444;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .gyro-values {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+      font-size: 18px;
+      color: #fca5a5;
+      font-weight: 600;
+    }
+
+    .gyro-axis { text-align: center; }
+    .gyro-axis small {
+      display: block;
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 400;
+      margin-bottom: 2px;
+    }
+
     .warning {
       text-align: center;
       padding: 18px;
@@ -119,7 +215,6 @@
       border: 1px solid #7f1d1d;
       border-radius: 12px;
       opacity: 0;
-      animation: reveal 0.5s ease-out 2.5s forwards;
     }
 
     .warning p {
@@ -136,7 +231,6 @@
       text-align: center;
       margin-top: 20px;
       opacity: 0;
-      animation: reveal 0.5s ease-out 3s forwards;
     }
 
     .footer p {
@@ -157,21 +251,35 @@
     <div class="results" id="results">
       <div class="header">
         <div class="shield">&#128274;</div>
-        <h1>Вече знаем за теб:</h1>
+        <h1 id="header-title">Вече знаем за теб:</h1>
         <p>Само от едно сканиране на QR код</p>
       </div>
 
+      <div class="location-hero" id="location-hero" style="display:none;"></div>
+
       <ul class="info-list" id="info-list"></ul>
 
-      <div class="warning">
+      <!-- Gyroscope live data (mobile only) -->
+      <div class="gyro-section" id="gyro-section" style="display:none;">
+        <div class="gyro-title">Движение на устройството — в реално време</div>
+        <div class="gyro-values">
+          <div class="gyro-axis"><small>Alpha</small><span id="gyro-a">—</span></div>
+          <div class="gyro-axis"><small>Beta</small><span id="gyro-b">—</span></div>
+          <div class="gyro-axis"><small>Gamma</small><span id="gyro-g">—</span></div>
+        </div>
+      </div>
+
+      <div class="warning" id="warning">
         <p>
-          Помисли преди да сканираш следващия QR код.
+          Всичко това — само от един линк.
           <br>
+          Помисли преди да сканираш следващия QR код.
+          <br><br>
           <strong>Киберсигурността започва от теб.</strong>
         </p>
       </div>
 
-      <div class="footer">
+      <div class="footer" id="footer">
         <p>UDIH — Курс по киберсигурност и защита на данните</p>
       </div>
     </div>
@@ -240,56 +348,155 @@
       return { device, os, browser };
     }
 
+    // Detect local IP via WebRTC
+    function getLocalIP() {
+      return new Promise((resolve) => {
+        const timeout = setTimeout(() => resolve(null), 3000);
+        try {
+          const pc = new RTCPeerConnection({ iceServers: [] });
+          pc.createDataChannel('');
+          pc.createOffer().then(offer => pc.setLocalDescription(offer));
+          pc.onicecandidate = (e) => {
+            if (!e.candidate) return;
+            const match = e.candidate.candidate.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
+            if (match && !match[1].startsWith('0.')) {
+              clearTimeout(timeout);
+              pc.close();
+              resolve(match[1]);
+            }
+          };
+        } catch {
+          clearTimeout(timeout);
+          resolve(null);
+        }
+      });
+    }
+
+    // Detect cameras and microphones
+    async function getMediaDevices() {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const cameras = devices.filter(d => d.kind === 'videoinput').length;
+        const mics = devices.filter(d => d.kind === 'audioinput').length;
+        return { cameras, mics };
+      } catch {
+        return null;
+      }
+    }
+
+    // VPN detection: compare IP timezone with browser timezone
+    function detectVPN(ipTimezone) {
+      if (!ipTimezone) return null;
+      const browserTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (browserTZ && ipTimezone && browserTZ !== ipTimezone) {
+        return { detected: true, browserTZ, ipTZ: ipTimezone };
+      }
+      return { detected: false };
+    }
+
     async function collectInfo() {
       const items = [];
       const { device, os, browser } = parseUserAgent();
+      let ipTimezone = null;
 
       // IP + location
       try {
         const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(4000) });
         const data = await resp.json();
-        items.push({ label: 'IP адрес', value: data.ip });
+
+        // Build location hero
         if (data.city && data.country_name) {
-          items.push({ label: 'Локация', value: `${data.city}, ${data.country_name}` });
+          const hero = document.getElementById('location-hero');
+          const lat = data.latitude;
+          const lon = data.longitude;
+          let coordsHtml = '';
+          if (lat && lon) {
+            coordsHtml = `<div class="loc-coords"><a href="https://www.google.com/maps?q=${lat},${lon}" target="_blank" rel="noopener">${lat.toFixed(4)}, ${lon.toFixed(4)}</a></div>`;
+          }
+          hero.innerHTML = `
+            <div class="loc-label">Знаем, че си в</div>
+            <div class="loc-text">
+              <span class="city">${data.city}</span>${data.region && data.region !== data.city ? ', ' + data.region : ''}<br>
+              <span class="country">${data.country_name}</span>
+            </div>
+            ${coordsHtml}
+          `;
+          hero.style.display = 'block';
         }
+
+        items.push({ label: 'IP адрес', value: data.ip, danger: true });
         if (data.org) {
           items.push({ label: 'Доставчик', value: data.org });
         }
+        if (data.postal) {
+          items.push({ label: 'Пощ. код', value: data.postal });
+        }
+        ipTimezone = data.timezone;
       } catch {
-        items.push({ label: 'IP адрес', value: 'Засечен (API лимит)' });
+        items.push({ label: 'IP адрес', value: 'Засечен (API лимит)', danger: true });
+      }
+
+      // Local network IP via WebRTC
+      const localIP = await getLocalIP();
+      if (localIP) {
+        items.push({ label: 'Локален IP', value: localIP, danger: true });
+      }
+
+      // VPN detection
+      const vpn = detectVPN(ipTimezone);
+      if (vpn && vpn.detected) {
+        items.push({ label: 'VPN / Proxy', value: `Вероятно Да (${vpn.browserTZ} ≠ ${vpn.ipTZ})`, danger: true });
       }
 
       items.push({ label: 'Устройство', value: device });
       items.push({ label: 'Операц. система', value: os });
       items.push({ label: 'Браузър', value: browser });
-      items.push({ label: 'Екран', value: `${screen.width} × ${screen.height} px` });
-      items.push({ label: 'Език', value: navigator.language || 'Неизвестен' });
-      items.push({ label: 'Платформа', value: navigator.platform || 'Неизвестна' });
+      items.push({ label: 'Екран', value: `${screen.width} × ${screen.height} px, ${screen.colorDepth}-bit` });
+      items.push({ label: 'Език', value: navigator.languages ? navigator.languages.join(', ') : navigator.language });
+      items.push({ label: 'Часова зона', value: Intl.DateTimeFormat().resolvedOptions().timeZone });
+
+      // Cameras & microphones
+      const media = await getMediaDevices();
+      if (media) {
+        items.push({
+          label: 'Камери',
+          value: media.cameras > 0 ? `${media.cameras} открити` : 'Не са открити',
+          danger: media.cameras > 0
+        });
+        items.push({
+          label: 'Микрофони',
+          value: media.mics > 0 ? `${media.mics} открити` : 'Не са открити',
+          danger: media.mics > 0
+        });
+      }
 
       // Battery
       if (navigator.getBattery) {
         try {
           const bat = await navigator.getBattery();
-          items.push({
-            label: 'Батерия',
-            value: `${Math.round(bat.level * 100)}%${bat.charging ? ' (зарежда се)' : ''}`
-          });
+          const pct = Math.round(bat.level * 100);
+          let extra = bat.charging ? ' (зарежда се)' : '';
+          if (!bat.charging && bat.dischargingTime && bat.dischargingTime !== Infinity) {
+            const hrs = Math.floor(bat.dischargingTime / 3600);
+            const mins = Math.floor((bat.dischargingTime % 3600) / 60);
+            extra = ` — ще свърши след ${hrs}ч ${mins}мин`;
+          }
+          items.push({ label: 'Батерия', value: `${pct}%${extra}` });
         } catch {}
       }
 
       // Connection
       if (navigator.connection) {
         const c = navigator.connection;
-        const type = c.effectiveType ? c.effectiveType.toUpperCase() : '';
-        items.push({ label: 'Мрежа', value: type || 'Неизвестна' });
+        let net = c.effectiveType ? c.effectiveType.toUpperCase() : '';
+        if (c.downlink) net += ` (~${c.downlink} Mbps)`;
+        items.push({ label: 'Мрежа', value: net || 'Неизвестна' });
       }
 
-      // Cores
+      // Cores & RAM
       if (navigator.hardwareConcurrency) {
         items.push({ label: 'CPU ядра', value: `${navigator.hardwareConcurrency}` });
       }
-
-      // RAM (Chrome only)
       if (navigator.deviceMemory) {
         items.push({ label: 'RAM', value: `~${navigator.deviceMemory} GB` });
       }
@@ -300,9 +507,15 @@
         value: navigator.maxTouchPoints > 0 ? `Да (${navigator.maxTouchPoints} точки)` : 'Не'
       });
 
+      // Do Not Track
+      const dnt = navigator.doNotTrack || window.doNotTrack;
+      if (dnt === '1') {
+        items.push({ label: 'Do Not Track', value: 'Включен (но ни спря ли?)' });
+      }
+
       items.push({
         label: 'Час на сканиране',
-        value: new Date().toLocaleTimeString('bg-BG')
+        value: new Date().toLocaleString('bg-BG')
       });
 
       return items;
@@ -317,7 +530,7 @@
       const list = document.getElementById('info-list');
       items.forEach((item, i) => {
         const li = document.createElement('li');
-        li.className = 'info-item';
+        li.className = `info-item${item.danger ? ' danger' : ''}`;
         li.style.animationDelay = `${i * 0.12}s`;
         li.innerHTML = `
           <span class="info-label">${item.label}</span>
@@ -325,6 +538,51 @@
         `;
         list.appendChild(li);
       });
+
+      // Animate warning and footer after all items
+      const totalDelay = items.length * 0.12 + 0.5;
+      document.getElementById('warning').style.animation = `reveal 0.5s ease-out ${totalDelay}s forwards`;
+      document.getElementById('footer').style.animation = `reveal 0.5s ease-out ${totalDelay + 0.5}s forwards`;
+
+      // Start gyroscope (mobile only)
+      startGyroscope(totalDelay);
+    }
+
+    function startGyroscope(delay) {
+      const section = document.getElementById('gyro-section');
+
+      function attach() {
+        window.addEventListener('deviceorientation', (e) => {
+          if (e.alpha === null) return;
+          section.style.display = 'block';
+          section.style.animationDelay = `${delay - 0.3}s`;
+          document.getElementById('gyro-a').textContent = Math.round(e.alpha) + '°';
+          document.getElementById('gyro-b').textContent = Math.round(e.beta) + '°';
+          document.getElementById('gyro-g').textContent = Math.round(e.gamma) + '°';
+        });
+      }
+
+      // iOS 13+ requires permission
+      if (typeof DeviceOrientationEvent !== 'undefined' &&
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // Auto-request on first touch
+        document.body.addEventListener('click', function handler() {
+          DeviceOrientationEvent.requestPermission().then(state => {
+            if (state === 'granted') attach();
+          });
+          document.body.removeEventListener('click', handler);
+        });
+        // Show a tap hint
+        setTimeout(() => {
+          if (section.style.display === 'none') {
+            section.style.display = 'block';
+            section.style.animationDelay = '0s';
+            section.querySelector('.gyro-title').textContent = 'Натисни екрана за достъп до жироскопа';
+          }
+        }, delay * 1000 + 500);
+      } else {
+        attach();
+      }
     }
 
     init();
