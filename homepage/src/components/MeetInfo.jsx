@@ -34,15 +34,7 @@ export default function MeetInfo({ meetLink }) {
   const displayUrl = meetLink.url.replace('https://', '')
 
   return (
-    <div className="rounded-lg border border-green-200 bg-green-50/50 p-4">
-      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-green-900">
-        <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-green-600">
-          <path fillRule="evenodd" d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z" clipRule="evenodd" />
-        </svg>
-        Google Meet
-      </h4>
-
-      <div className="space-y-2 text-sm">
+    <div className="rounded-lg bg-gray-50 px-4 py-3 space-y-2 text-sm">
         <div className="flex items-center justify-between">
           <span className="text-green-700">
             Линк:{' '}
@@ -90,19 +82,6 @@ export default function MeetInfo({ meetLink }) {
           </span>
           <CopyButton text={meetLink.pin} />
         </div>
-      </div>
-
-      <a
-        href={meetLink.directUrl || meetLink.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-green-800"
-      >
-        <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
-          <path fillRule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm6.39-2.908a.75.75 0 01.766.027l3.5 2.25a.75.75 0 010 1.262l-3.5 2.25A.75.75 0 018 12.25v-4.5a.75.75 0 01.39-.658z" clipRule="evenodd" />
-        </svg>
-        Влез в срещата
-      </a>
     </div>
   )
 }
