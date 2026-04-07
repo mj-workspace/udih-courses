@@ -33,6 +33,7 @@ jobs:
           cache-dependency-path: |
             homepage/pnpm-lock.yaml
             udih-2024-27/cybersecurity-course/lecturer-guide/pnpm-lock.yaml
+            udih-2024-27/cybersecurity-course/presentation/pnpm-lock.yaml
 
       - name: Build homepage
         working-directory: homepage
@@ -48,11 +49,19 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm run build
 
+      - name: Build cybersecurity presentation
+        working-directory: udih-2024-27/cybersecurity-course/presentation
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
+
       - name: Assemble site
         run: |
           mkdir -p _site
           cp -r homepage/dist/* _site/
-          cp -r udih-2024-27/cybersecurity-course/lecturer-guide/dist _site/cybersecurity
+          cp -r udih-2024-27/cybersecurity-course/lecturer-guide/dist _site/cybersecurity-lecturer-guide
+          cp -r udih-2024-27/cybersecurity-course/presentation/dist _site/cybersecurity-presentation
+          cp -r cyber-demo _site/cyber-demo
 
       - uses: actions/configure-pages@v5
 
