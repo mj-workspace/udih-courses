@@ -13,7 +13,7 @@
 | Курс | Описание | Приложения |
 |------|----------|------------|
 | [Въведение в дигиталната грамотност](udih-2024-27/digital-fundamentals/) (Реф. № 001) | Хардуер, операционни системи, мрежи, отстраняване на проблеми (12 уч. часа) | — |
-| [Киберсигурност и защита на данните](udih-2024-27/cybersecurity-course/) (Реф. № 011) | Фишинг, пароли, защита на данни, мрежова сигурност (12 уч. часа) | [Ръководство за лектора](https://udih.anis.bg/cybersecurity-lecturer-guide/) |
+| [Киберсигурност и защита на данните](udih-2024-27/cybersecurity-course/) (Реф. № 011) | Фишинг, пароли, защита на данни, мрежова сигурност (12 уч. часа) | [Ръководство за лектора](https://udih.anis.bg/cybersecurity-lecturer-guide/) · [Презентация](https://udih.anis.bg/cybersecurity-presentation/) · [Входен изпит](https://udih.anis.bg/cybersecurity-lecturer-guide/entry-exam.html) |
 
 ### UDIH 2027–2030
 
@@ -24,8 +24,11 @@
 ```
 udih-courses/
 ├── homepage/                        # Портал (React + StaticCrypt)
+├── cyber-demo/                      # Демо страница за киберсигурност (QR код)
 ├── udih-2024-27/                    # Програма 2024–2027
-│   ├── cybersecurity-course/        # Курс по киберсигурност + lecturer-guide app
+│   ├── cybersecurity-course/        # Курс по киберсигурност
+│   │   ├── lecturer-guide/          #   Ръководство за лектора (React app)
+│   │   └── presentation/            #   Презентация (React app)
 │   └── digital-fundamentals/        # Въведение в дигиталната грамотност
 └── udih-2027-30/                    # Програма 2027–2030 (предстои)
 ```
@@ -38,5 +41,7 @@ Auto-deploy на push to `main` чрез GitHub Actions → GitHub Pages.
 |-----|-----|
 | Портал (homepage) | [udih.anis.bg](https://udih.anis.bg/) |
 | Ръководство за лектора — Киберсигурност | [udih.anis.bg/cybersecurity-lecturer-guide/](https://udih.anis.bg/cybersecurity-lecturer-guide/) |
+| Презентация — Киберсигурност | [udih.anis.bg/cybersecurity-presentation/](https://udih.anis.bg/cybersecurity-presentation/) |
+| Cyber Demo (QR код) | [udih.anis.bg/cyber-demo/](https://udih.anis.bg/cyber-demo/) |
 
 **Tech stack:** React 19 + Vite 8 + Tailwind CSS 4, pnpm, StaticCrypt за защита на портала.
