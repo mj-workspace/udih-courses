@@ -35,18 +35,22 @@ export default function CollapsibleSection({ section, depth = 0, isExpanded, onT
     <div className={`${indent} ${depth > 0 ? `border-l-2 ${borderColor}` : ''}`} id={`section-${section.id}`}>
       <button
         onClick={() => onToggle(section.id)}
-        className={`w-full flex items-center gap-2 text-left py-2.5 px-3 rounded-lg hover:bg-gray-100 transition-colors group ${
-          depth === 0 ? 'text-lg font-semibold text-gray-900' : 'text-base font-medium text-gray-700'
+        className={`w-full flex items-center gap-2 text-left py-2.5 px-3 rounded-lg cursor-pointer transition-colors group ${
+          depth === 0
+            ? isExpanded
+              ? 'text-lg font-semibold text-blue-900 bg-blue-50 hover:bg-blue-100'
+              : 'text-lg font-semibold text-gray-900 hover:bg-gray-100'
+            : 'text-base font-medium text-gray-700 hover:bg-gray-100'
         }`}
       >
         <span
-          className={`text-gray-400 transition-transform duration-200 text-sm ${
-            isExpanded ? 'rotate-90' : ''
+          className={`transition-transform duration-200 text-sm ${
+            isExpanded ? 'rotate-90 text-blue-500' : 'text-gray-400'
           }`}
         >
           ▶
         </span>
-        <span className="group-hover:text-gray-900">{section.title}</span>
+        <span className={isExpanded && depth === 0 ? 'text-blue-900' : 'group-hover:text-gray-900'}>{section.title}</span>
       </button>
 
       <div
@@ -56,7 +60,7 @@ export default function CollapsibleSection({ section, depth = 0, isExpanded, onT
           opacity: isExpanded ? 1 : 0,
         }}
       >
-        <div ref={contentRef} className="px-3 pb-3 space-y-3">
+        <div ref={contentRef} className={`pb-3 space-y-3 ${depth === 0 ? 'ml-3 pl-4 border-l-2 border-blue-200' : 'px-3'}`}>
           {section.talkingPoints && section.talkingPoints.length > 0 && (
             <ContentBlock type="talking-points" content={section.talkingPoints} />
           )}

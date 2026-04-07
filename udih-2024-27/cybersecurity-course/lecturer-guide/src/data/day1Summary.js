@@ -1,6 +1,6 @@
 export const day1Summary = {
   id: 'day1-summary',
-  title: 'Обобщение на Ден 1',
+  title: 'Обобщение и закриване на Ден 1',
   duration: '10 мин',
   timeMarker: 'Ден 1, 16:50 – 17:00',
   note: 'Затвори деня с ясни изводи и очаквания за утре.',

@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+/* Elegant scrollbar — shared by sidebar and main content */
+.elegant-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.elegant-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.elegant-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.elegant-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.elegant-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.elegant-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.08) transparent;
+}
+
+.elegant-scroll:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}

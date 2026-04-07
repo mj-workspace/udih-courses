@@ -33,7 +33,7 @@
         }
 
         .toolbar-title {
-            margin-right: auto;
+            flex: 1;
             font-size: 15px;
         }
 
@@ -59,6 +59,26 @@
             border: 1px solid rgba(255,255,255,0.3) !important;
         }
         .btn-clean:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-back {
+            text-decoration: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-link {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+        }
+        .btn-link:hover { background: rgba(255,255,255,0.25); }
 
         /* Exam content */
         .exam {
@@ -220,10 +240,12 @@
 <body>
 
     <div class="toolbar">
+        <a href="/udih-courses/" class="btn-back" title="Към началната страница">&larr; Начало</a>
         <span class="toolbar-title">Входен изпит — Киберсигурност</span>
+        <button class="btn-link" onclick="copyLink()" title="Копирай линк към изпита">Копирай линк</button>
         <button class="btn-answers" onclick="toggleAnswers()">Покажи верните отговори</button>
-        <button class="btn-clean" onclick="printExam(false)">Свали PDF (без отговори)</button>
-        <button class="btn-answers" onclick="printExam(true)">Свали PDF (с отговори)</button>
+        <button class="btn-clean" onclick="downloadPdf(false)">Свали PDF (без отговори)</button>
+        <button class="btn-answers" onclick="downloadPdf(true)">Свали PDF (с отговори)</button>
     </div>
 
     <div class="exam">
@@ -330,10 +352,19 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
     <script>
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btn = document.querySelector('.btn-link');
+                btn.textContent = 'Копирано!';
+                setTimeout(() => { btn.textContent = 'Копирай линк'; }, 2000);
+            });
+        }
+
         function toggleAnswers() {
             document.body.classList.toggle('show-answers');
-            const btn = document.querySelector('.btn-answers');
+            const btn = document.querySelector('.toolbar .btn-answers');
             if (document.body.classList.contains('show-answers')) {
                 btn.textContent = 'Скрий верните отговори';
             } else {
@@ -341,13 +372,30 @@
             }
         }
 
-        function printExam(withAnswers) {
+        function downloadPdf(withAnswers) {
             if (withAnswers) {
                 document.body.classList.add('show-answers');
             } else {
                 document.body.classList.remove('show-answers');
             }
-            setTimeout(() => window.print(), 100);
+
+            const filename = withAnswers
+                ? 'Входен_изпит_с_отговори.pdf'
+                : 'Входен_изпит.pdf';
+
+            const element = document.querySelector('.exam');
+
+            html2pdf()
+                .set({
+                    margin: [15, 12, 15, 12],
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css'] },
+                })
+                .from(element)
+                .save();
         }
     </script>
 </body>

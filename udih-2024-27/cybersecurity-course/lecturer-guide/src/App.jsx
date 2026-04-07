@@ -6,8 +6,8 @@ import { sidebarGroups, navigationOrder, sectionToModule } from './data/navigati
 import { modules } from './data/index'
 
 export default function App() {
-  const [activeModuleId, setActiveModuleId] = useState('course-plan')
-  const [activeSectionId, setActiveSectionId] = useState('course-plan-info')
+  const [activeModuleId, setActiveModuleId] = useState('intro')
+  const [activeSectionId, setActiveSectionId] = useState('intro-main')
   const [expandedSections, setExpandedSections] = useState(new Set())
 
   const handleModuleSelect = useCallback((moduleId) => {
@@ -53,7 +53,7 @@ export default function App() {
   const activeModule = modules[activeModuleId]
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex h-screen bg-white overflow-hidden">
       <Sidebar
         groups={sidebarGroups}
         activeModuleId={activeModuleId}
@@ -63,7 +63,7 @@ export default function App() {
         onSectionSelect={handleSectionSelect}
       />
 
-      <main className="flex-1 p-8 pb-24 overflow-y-auto text-[17px]">
+      <main className="flex-1 p-8 pb-24 overflow-y-auto h-screen text-[17px] elegant-scroll">
         <ModuleView
           module={activeModule}
           activeSectionId={activeSectionId}

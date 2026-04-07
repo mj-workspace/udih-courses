@@ -23,7 +23,7 @@ function TalkingPointItem({ point, depth = 0 }) {
 
   if (!hasChildren) {
     return (
-      <li className="flex items-start gap-2 py-1">
+      <li className={`flex items-start gap-2 py-1 ${point.highlight ? 'my-1 -ml-3 w-fit rounded-lg border border-violet-200 bg-violet-50/50 pl-3 pr-4 py-2' : ''}`}>
         <span className="text-blue-400 mt-1.5 text-[8px] shrink-0">●</span>
         <span className="text-gray-700 leading-relaxed">
           {hasDetail ? (
@@ -51,7 +51,7 @@ function TalkingPointItem({ point, depth = 0 }) {
   }
 
   return (
-    <li className="py-0.5">
+    <li className={`py-0.5 ${point.highlight ? 'my-1 -ml-3 w-fit rounded-lg border border-violet-200 bg-violet-50/50 pl-3 pr-4 py-1' : ''}`}>
       <div className="flex items-start gap-2">
         <button
           onClick={() => setOpen(!open)}
