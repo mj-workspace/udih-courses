@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Програма — Киберсигурност и защита на данните</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: #166534;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .toolbar-title { flex: 1; font-size: 15px; }
+
+        .toolbar button {
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-link {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+        }
+        .btn-link:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-download { background: #fff; color: #166534; }
+        .btn-download:hover { background: #dcfce7; }
+
+        /* Document container */
+        .document {
+            max-width: 210mm;
+            margin: 24px auto;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        /* Page = exact A4 page, padding = page margins */
+        .page {
+            position: relative;
+            height: 297mm;
+            padding: 12mm 15mm 18mm;
+            overflow: hidden;
+        }
+
+        .page + .page { border-top: 1px solid #e5e7eb; }
+
+        /* Logo header */
+        .logo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .logo-header img { height: auto; object-fit: contain; }
+        .logo-udih { max-width: 170px; max-height: 60px; }
+        .logo-eu { max-width: 210px; max-height: 55px; }
+        .logo-program { max-width: 200px; max-height: 45px; }
+
+        /* Contact footer — pinned to bottom of each page */
+        .page-footer {
+            position: absolute;
+            bottom: 12mm;
+            left: 15mm;
+            right: 15mm;
+            border-top: 2px solid #059669;
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            font-size: 11.5px;
+            color: #475569;
+        }
+
+        .page-footer .lbl {
+            color: #059669;
+            font-weight: 700;
+            margin-right: 2px;
+        }
+
+        /* Title */
+        .program-title {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 28px;
+            margin-bottom: 8px;
+            letter-spacing: 3px;
+        }
+
+        .program-subtitle {
+            text-align: center;
+            font-size: 12.5px;
+            color: #475569;
+            margin-bottom: 24px;
+        }
+
+        .date-label { font-size: 14px; font-weight: 700; color: #059669; }
+        .date-value { font-size: 14px; color: #059669; margin-bottom: 12px; }
+
+        .topic-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 16px;
+        }
+
+        /* Schedule table */
+        .schedule {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-collapse: collapse;
+            margin-bottom: 28px;
+            font-size: 12.5px;
+        }
+
+        .schedule td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        .schedule .day-header td {
+            background: #f0fdf4;
+            font-weight: 700;
+            font-size: 13px;
+            color: #059669;
+            border-bottom: 1px solid #d1d5db;
+            padding: 8px 10px;
+        }
+
+        .schedule .topic-label td {
+            font-weight: 700;
+            font-style: italic;
+            font-size: 12px;
+            color: #1e293b;
+        }
+
+        .schedule .section-label td {
+            font-weight: 700;
+            font-size: 12px;
+            color: #1e293b;
+            padding-top: 8px;
+        }
+
+        .schedule .row td:first-child { width: 26px; font-weight: 600; color: #475569; }
+        .schedule .row td:nth-child(2) { width: 125px; color: #475569; }
+        .schedule .row td:nth-child(3) { color: #1e293b; }
+
+        /* Info sections */
+        .info-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #059669;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .info-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: #059669;
+            margin-top: 18px;
+            margin-bottom: 6px;
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.75;
+            margin-bottom: 8px;
+        }
+
+        .info-text strong { color: #1e293b; }
+
+        .info-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 10px;
+        }
+
+        .info-list li {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.75;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .info-list li::before {
+            content: '-';
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .info-text a { color: #059669; text-decoration: underline; }
+
+        /* Zoom info box */
+        .zoom-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0;
+        }
+
+        .zoom-box-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            text-decoration: underline;
+        }
+
+        .zoom-box ol { padding-left: 18px; font-size: 12.5px; color: #374151; }
+        .zoom-box li { margin-bottom: 5px; line-height: 1.6; }
+        .zoom-box ul { list-style: disc; padding-left: 18px; margin-top: 4px; }
+
+        /* Signature */
+        .signature { text-align: right; margin-top: 32px; margin-bottom: 16px; }
+        .signature-main { font-size: 14px; font-weight: 700; color: #1e293b; }
+        .signature-sub { font-size: 13px; color: #059669; font-weight: 600; }
+
+        /* Print styles */
+        @media print {
+            body { background: #fff; }
+            .toolbar { display: none !important; }
+            .document { margin: 0; box-shadow: none; }
+            .page + .page { border-top: none; }
+            .page { page-break-after: always; }
+            .page:last-child { page-break-after: auto; }
+            @page { size: A4; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <a href="/" class="btn-back" title="Към началната страница">&larr; Начало</a>
+        <span class="toolbar-title">Програма — Киберсигурност</span>
+        <button class="btn-link" onclick="copyLink()" title="Копирай линк">Копирай линк</button>
+        <button class="btn-download" onclick="downloadPdf()">Свали PDF</button>
+    </div>
+
+    <div class="document" id="document">
+
+        <!-- PAGE 1 -->
+        <div class="page">
+            <div class="logo-header">
+                <img src="/cybersecurity/lecturer-guide/img-logo-udih.png" class="logo-udih" alt="UDIH">
+                <img src="/cybersecurity/lecturer-guide/img-logo-eu.png" class="logo-eu" alt="Съфинансирано от Европейския съюз">
+                <img src="/cybersecurity/lecturer-guide/img-logo-program.png" class="logo-program" alt="Програма НИДИТ">
+            </div>
+
+            <h1 class="program-title">ПРОГРАМА</h1>
+            <p class="program-subtitle">&bdquo;Национална обучителна програма за дигитална трансформация на комуналния сектор&ldquo;</p>
+
+            <p class="date-label"><em>Дата:</em></p>
+            <p class="date-value">29-30.04. 2026 г.</p>
+
+            <p class="topic-title">Тема 11: &ldquo;КИБЕРСИГУРНОСТ И ЗАЩИТА НА ДАННИТЕ&rdquo;</p>
+
+            <table class="schedule">
+                <tr class="day-header"><td colspan="3">Ден първи</td></tr>
+                <tr class="topic-label"><td colspan="3">Име на темата</td></tr>
+                <tr class="row"><td>1.</td><td>09:30 ч. : 09:40 ч.</td><td>Регистрация, въведение в курса, цели и очаквани резултати.</td></tr>
+                <tr class="row"><td>2.</td><td>09:40 ч. : 10:30 ч.</td><td>Модул 1 — Въведение в киберсигурността</td></tr>
+                <tr class="row"><td>3.</td><td>10:55 ч. : 12:25 ч.</td><td>Модул 2 — Фишинг, злонамерен софтуер и онлайн измами</td></tr>
+                <tr class="row"><td>4.</td><td>13:35 ч. : 14:25 ч.</td><td>Модул 3 — Сигурност на пароли и автентикация</td></tr>
+                <tr class="row"><td>5.</td><td>14:50 ч. : 16:10 ч.</td><td>Модул 4 — Защита на личната информация и данни</td></tr>
+                <tr class="row"><td>6.</td><td>16:20 ч. : 17:00 ч.</td><td>Модул 5 — Мрежова сигурност (Част 1) + Обобщение на Ден 1</td></tr>
+                <tr class="day-header"><td colspan="3">Ден втори</td></tr>
+                <tr class="topic-label"><td colspan="3">Име на темата</td></tr>
+                <tr class="row"><td>7.</td><td>09:30 ч. : 09:40 ч.</td><td>Откриване и кратък преговор — Основни теми от Ден 1</td></tr>
+                <tr class="row"><td>8.</td><td>09:40 ч. : 11:10 ч.</td><td>Модул 5 — Мрежова сигурност (Част 2 — Продължение)</td></tr>
+                <tr class="row"><td>9.</td><td>11:35 ч. : 12:35 ч.</td><td>Модул 6 — Политики, процедури и реакция при инциденти (Част 1)</td></tr>
+                <tr class="row"><td>10.</td><td>13:35 ч. : 14:35 ч.</td><td>Модул 6 — Политики, процедури и реакция при инциденти (Част 2) + Обобщение</td></tr>
+                <tr class="section-label"><td colspan="3">Проверка на усвоените знания</td></tr>
+                <tr class="row"><td>11.</td><td>15:00 ч. : 17:00 ч.</td><td>Тест върху материала от курса / изпълнение на реални задачи</td></tr>
+            </table>
+
+            <div class="page-footer">
+                <span><span class="lbl">m.</span>+359 88 433 3266</span>
+                <span><span class="lbl">e.</span>office@udih.eu</span>
+                <span><span class="lbl">a.</span>25 Tsanko Dyustabanov Str., 4000 Center, Plovdiv.</span>
+            </div>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page">
+            <div class="logo-header">
+                <img src="/cybersecurity/lecturer-guide/img-logo-udih.png" class="logo-udih" alt="UDIH">
+                <img src="/cybersecurity/lecturer-guide/img-logo-eu.png" class="logo-eu" alt="Съфинансирано от Европейския съюз">
+                <img src="/cybersecurity/lecturer-guide/img-logo-program.png" class="logo-program" alt="Програма НИДИТ">
+            </div>
+
+            <h2 class="info-title">ИНФОРМАЦИЯ ЗА УЧАСТНИЦИТЕ</h2>
+
+            <h3 class="info-heading">Формат на обучението</h3>
+            <p class="info-text">Обучението се провежда онлайн, по предпочитание на Вашата организация.</p>
+
+            <p class="info-text">Продължителност и ангажираност:</p>
+            <ul class="info-list">
+                <li>2 последователни дни</li>
+                <li>6 тренировъчни часа на ден</li>
+            </ul>
+
+            <p class="info-text">За пълноценно участие в обучението предварително сме отправили препоръка към записаните предприятия да осигурят на участниците свободно време и подходяща среда за участие, по вътрешна преценка от работното място или алтернативна среда.</p>
+
+            <h3 class="info-heading">Платформа за провеждане</h3>
+            <p class="info-text">Обучението ще се проведе чрез <strong>Google Meet.</strong></p>
+            <p class="info-text"><strong>Линк за включване:</strong> <a href="https://udih.anis.bg/meet-cybersecurity" target="_blank" rel="noopener noreferrer">https://udih.anis.bg/meet-cybersecurity</a></p>
+            <p class="info-text">Не е необходим Google акаунт — всеки може да се включи директно от браузъра.</p>
+
+            <p class="info-text">Молим при включване да изписвате име, фамилия и организация<br>
+            (напр. Георги Георгиев ВиК Пловдив).</p>
+
+            <h3 class="info-heading">Технически съвет</h3>
+            <p class="info-text">За да се включите безпроблемно в обучението, уверете се, че разполагате със:</p>
+            <ul class="info-list">
+                <li>стабилна интернет връзка</li>
+                <li>компютър или лаптоп</li>
+            </ul>
+
+            <p class="info-text">Препоръчваме да се включите 5–10 минути по-рано, за да проверите връзката и настройките си.</p>
+
+            <div class="page-footer">
+                <span><span class="lbl">m.</span>+359 88 433 3266</span>
+                <span><span class="lbl">e.</span>office@udih.eu</span>
+                <span><span class="lbl">a.</span>25 Tsanko Dyustabanov Str., 4000 Center, Plovdiv.</span>
+            </div>
+        </div>
+
+        <!-- PAGE 3 -->
+        <div class="page">
+            <div class="logo-header">
+                <img src="/cybersecurity/lecturer-guide/img-logo-udih.png" class="logo-udih" alt="UDIH">
+                <img src="/cybersecurity/lecturer-guide/img-logo-eu.png" class="logo-eu" alt="Съфинансирано от Европейския съюз">
+                <img src="/cybersecurity/lecturer-guide/img-logo-program.png" class="logo-program" alt="Програма НИДИТ">
+            </div>
+
+            <h3 class="info-heading">Сертификати и оценяване</h3>
+            <p class="info-text">Сертификат за участие ще бъде издаден на всички участници след приключване на обучението.</p>
+
+            <p class="info-text">В края на курса ще бъде проведена кратка сесия за проверка на възприятието и усвояването на материала от курса.</p>
+
+            <p class="info-text">Условия за получаване на сертификат:</p>
+            <ul class="info-list">
+                <li>присъствие по време на обучението</li>
+                <li>завършен финална проверка</li>
+            </ul>
+
+            <h3 class="info-heading">Запис на обучението</h3>
+            <p class="info-text">Обучението се записва за отчетни цели пред финансиращия орган – Министерството на иновациите и растежа.</p>
+
+            <h3 class="info-heading">Обратна връзка</h3>
+            <p class="info-text">Молим за Вашата обратна връзка, идеи и препоръки чрез попълване на кратка анкета, която ще ни помогне да се съобразим в най-голяма степен с Вашите нужди и да бъдем максимално полезни за участниците и в бъдеще.</p>
+            <p class="info-text"><strong>Линк към анкетата:</strong> <a href="https://forms.gle/quQP55M6DyodSc2Y7" target="_blank" rel="noopener noreferrer">https://forms.gle/quQP55M6DyodSc2Y7</a></p>
+
+            <div class="signature">
+                <p class="signature-main">Екипът на UDIH</p>
+                <p class="signature-sub">Хъб за дигитална трансформация на комуналните услуги</p>
+            </div>
+
+            <div class="page-footer">
+                <span><span class="lbl">m.</span>+359 88 433 3266</span>
+                <span><span class="lbl">e.</span>office@udih.eu</span>
+                <span><span class="lbl">a.</span>25 Tsanko Dyustabanov Str., 4000 Center, Plovdiv.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                var btn = document.querySelector('.btn-link');
+                btn.textContent = 'Копирано!';
+                setTimeout(function() { btn.textContent = 'Копирай линк'; }, 2000);
+            });
+        }
+
+        async function downloadPdf() {
+            var btn = document.querySelector('.btn-download');
+            btn.textContent = 'Генериране…';
+            btn.disabled = true;
+
+            try {
+                var pages = document.querySelectorAll('.page');
+                var pdf = new jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+                for (var i = 0; i < pages.length; i++) {
+                    var canvas = await html2canvas(pages[i], {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false
+                    });
+                    var imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+                    if (i > 0) pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+                }
+
+                pdf.save('Програма_Киберсигурност.pdf');
+            } finally {
+                btn.textContent = 'Свали PDF';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

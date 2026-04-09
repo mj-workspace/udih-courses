@@ -47,6 +47,7 @@ All content is in **Bulgarian**. Technical terms use English equivalents where s
 |-----|--------|-----|
 | homepage | (портал) | `/` |
 | entry-exam | cybersecurity-course | `/cybersecurity/entry-exam/` |
+| program | cybersecurity-course | `/cybersecurity/program/` |
 | presentation | cybersecurity-course | `/cybersecurity/presentation/` |
 | lecturer-guide | cybersecurity-course | `/cybersecurity/lecturer-guide/` |
 
