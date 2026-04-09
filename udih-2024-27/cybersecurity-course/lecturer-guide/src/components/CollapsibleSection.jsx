@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import ContentBlock from './ContentBlock'
+import LinkCard from './LinkCard'
 
 const depthColors = [
   'border-l-gray-800',
@@ -63,6 +64,10 @@ export default function CollapsibleSection({ section, depth = 0, isExpanded, onT
         <div ref={contentRef} className={`pb-3 space-y-3 ${depth === 0 ? 'ml-3 pl-4 border-l-2 border-blue-200' : 'px-3'}`}>
           {section.talkingPoints && section.talkingPoints.length > 0 && (
             <ContentBlock type="talking-points" content={section.talkingPoints} />
+          )}
+
+          {section.linkCard && (
+            <LinkCard linkCard={section.linkCard} />
           )}
 
           {section.examples && section.examples.length > 0 && (

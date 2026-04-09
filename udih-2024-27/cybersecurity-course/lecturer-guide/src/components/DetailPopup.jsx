@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
 
 function renderFormattedText(text) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/)
+  const parts = text.split(/(\*\*[^*]+\*\*|!![^!]+!!)/)
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return <strong key={i} className="font-semibold text-gray-900">{part.slice(2, -2)}</strong>
+    }
+    if (part.startsWith('!!') && part.endsWith('!!')) {
+      return <span key={i} className="text-red-600 font-medium">{part.slice(2, -2)}</span>
     }
     return part
   })

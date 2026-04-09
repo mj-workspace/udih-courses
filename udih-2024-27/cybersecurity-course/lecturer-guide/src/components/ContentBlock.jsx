@@ -1,14 +1,22 @@
 import { useState } from 'react'
 import DetailPopup from './DetailPopup'
+import LinkCard from './LinkCard'
 
 function renderBoldText(text) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/)
+  const parts = text.split(/(\*\*[^*]+\*\*|!![^!]+!!)/)
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
         <strong key={i} className="font-semibold text-gray-900">
           {part.slice(2, -2)}
         </strong>
+      )
+    }
+    if (part.startsWith('!!') && part.endsWith('!!')) {
+      return (
+        <span key={i} className="text-red-600 font-medium">
+          {part.slice(2, -2)}
+        </span>
       )
     }
     return part
@@ -105,7 +113,16 @@ function TalkingPoints({ content }) {
     <div>
       <ul className="space-y-0.5">
         {content.map((point, i) => (
-          <TalkingPointItem key={i} point={point} />
+          <li key={i} className="list-none">
+            <ul className="space-y-0.5">
+              <TalkingPointItem point={point} />
+            </ul>
+            {point.linkCard && (
+              <div className="mt-2 mb-2 ml-5">
+                <LinkCard linkCard={point.linkCard} />
+              </div>
+            )}
+          </li>
         ))}
       </ul>
     </div>

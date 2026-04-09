@@ -1,5 +1,6 @@
 import ContentBlock from './ContentBlock'
 import CollapsibleSection from './CollapsibleSection'
+import LinkCard from './LinkCard'
 
 function SectionContent({ section }) {
   return (
@@ -12,6 +13,9 @@ function SectionContent({ section }) {
       )}
       {section.talkingPoints?.length > 0 && (
         <ContentBlock type="talking-points" content={section.talkingPoints} />
+      )}
+      {section.linkCard && (
+        <LinkCard linkCard={section.linkCard} />
       )}
       {section.examples?.length > 0 && (
         <ContentBlock type="examples" content={section.examples} />

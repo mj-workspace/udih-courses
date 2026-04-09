@@ -30,7 +30,7 @@ export const sidebarGroups = [
       { id: 'module6-part2', shortTitle: '6. Политики и реакция (Част 2)', type: 'module', duration: '60 мин' },
       { id: 'qa-m6', type: 'qa', shortTitle: 'Въпроси и отговори', duration: '10 мин' },
       { id: 'break-d2-2', type: 'break', shortTitle: 'Почивка', duration: '15 мин' },
-      { id: 'exam', shortTitle: 'Финален изпит', type: 'utility', duration: '120 мин' },
+      { id: 'exam', shortTitle: 'Закриване и финален изпит', type: 'utility', duration: '120 мин' },
     ],
   },
 ]
