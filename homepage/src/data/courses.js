@@ -206,16 +206,34 @@ export const programs = [
             ],
           },
         ],
+        organizerEmailContent: `Линкове и информация за организаторите относно курса "Киберсигурност и защита на данните (Реф. № 011)"
+
+Линк за присъединяване в Google Meet:
+https://udih.anis.bg/meet-cybersecurity
+
+Линк за сваляне на програмата:
+https://udih.anis.bg/cybersecurity/program/
+
+Линк към презентацията:
+https://udih.anis.bg/cybersecurity/presentation/
+
+Линк за сваляне на входния изпит:
+https://udih.anis.bg/cybersecurity/entry-exam/
+
+Линк към Google Drive с архиви на записите и резултатите от финалния изпит:
+https://drive.google.com/drive/folders/1ODW0DcpnrnT7wlJC8uoJ1xCMCAN_he7E?usp=sharing`,
+        surveyUrl: 'https://forms.gle/quQP55M6DyodSc2Y7',
+        presentationUrl: '/cybersecurity/presentation/',
         resources: [
+          {
+            label: 'Програма',
+            url: '/cybersecurity/program/',
+            type: 'document',
+          },
           {
             label: 'Входен изпит',
             url: '/cybersecurity/entry-exam/',
             type: 'document',
-          },
-          {
-            label: 'Презентация',
-            url: '/cybersecurity/presentation/',
-            type: 'presentation',
           },
           {
             label: 'Ръководство за лектора',

@@ -73,6 +73,37 @@ function TreeView({ nodes }) {
   )
 }
 
+function OrgEmailPanel({ content }) {
+  const [copied, setCopied] = useState(false)
+
+  function handleCopy() {
+    navigator.clipboard.writeText(content).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <div className="relative mt-3 rounded-lg bg-gray-50 px-4 py-3 text-sm text-green-800/70">
+      <button
+        onClick={handleCopy}
+        className="absolute right-2 top-2 rounded px-1.5 py-0.5 text-green-600 transition-all hover:bg-green-100"
+        title="Копирай всичко"
+      >
+        {copied ? (
+          <span className="text-xs font-medium text-green-700">Копирано!</span>
+        ) : (
+          <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+            <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
+            <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.44 6.44A1.5 1.5 0 008.378 6H4.5z" />
+          </svg>
+        )}
+      </button>
+      <div className="whitespace-pre-wrap pr-8">{content}</div>
+    </div>
+  )
+}
+
 export default function CourseCard({ course }) {
   const [expanded, setExpanded] = useState(false)
   const [activeTab, setActiveTab] = useState(null)
@@ -154,6 +185,69 @@ export default function CourseCard({ course }) {
                     <path fillRule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm6.39-2.908a.75.75 0 01.766.027l3.5 2.25a.75.75 0 010 1.262l-3.5 2.25A.75.75 0 018 12.25v-4.5a.75.75 0 01.39-.658z" clipRule="evenodd" />
                   </svg>
                   Влез
+                </a>
+              </div>
+            )}
+
+            {course.surveyUrl && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-green-900">Анкета:</span>
+                <a
+                  href={course.surveyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                  <span className="underline decoration-green-300 underline-offset-2 hover:text-green-900">
+                    forms.gle/quQP55M6DyodSc2Y7
+                  </span>
+                </a>
+                <CopyPill text={course.surveyUrl} />
+                <a
+                  href={course.surveyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 rounded-full bg-green-700 px-2.5 py-0.5 text-xs font-medium text-white transition-colors hover:bg-green-800"
+                >
+                  <svg viewBox="0 0 20 20" fill="currentColor" className="h-3 w-3">
+                    <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
+                  </svg>
+                  Попълни
+                </a>
+              </div>
+            )}
+
+            {course.presentationUrl && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-green-900">Презентация:</span>
+                <a
+                  href={course.presentationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                  <span className="underline decoration-green-300 underline-offset-2 hover:text-green-900">
+                    {`${window.location.host}${course.presentationUrl}`}
+                  </span>
+                </a>
+                <CopyPill text={`${window.location.origin}${course.presentationUrl}`} />
+                <a
+                  href={course.presentationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 rounded-full bg-green-700 px-2.5 py-0.5 text-xs font-medium text-white transition-colors hover:bg-green-800"
+                >
+                  <svg viewBox="0 0 20 20" fill="currentColor" className="h-3 w-3">
+                    <path fillRule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm6.39-2.908a.75.75 0 01.766.027l3.5 2.25a.75.75 0 010 1.262l-3.5 2.25A.75.75 0 018 12.25v-4.5a.75.75 0 01.39-.658z" clipRule="evenodd" />
+                  </svg>
+                  Стартирай
                 </a>
               </div>
             )}
@@ -278,6 +372,18 @@ export default function CourseCard({ course }) {
                     Подготовка за ново издание
                   </button>
                 )}
+                {course.organizerEmailContent && (
+                  <button
+                    onClick={() => setActiveTab(activeTab === 'orgEmail' ? null : 'orgEmail')}
+                    className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                      activeTab === 'orgEmail'
+                        ? 'bg-green-700 text-white'
+                        : 'bg-green-50 text-green-700 hover:bg-green-100'
+                    }`}
+                  >
+                    Е-mail за организаторите
+                  </button>
+                )}
                 {course.schedule?.map((day, idx) => (
                   <button
                     key={day.day}
@@ -317,6 +423,10 @@ export default function CourseCard({ course }) {
                 </div>
               ))}
             </div>
+          )}
+
+          {activeTab === 'orgEmail' && course.organizerEmailContent && (
+            <OrgEmailPanel content={course.organizerEmailContent} />
           )}
 
           {course.schedule?.map((day, idx) =>
