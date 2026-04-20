@@ -1,4 +1,6 @@
 import illustrations from './illustrations'
+import scenes from './scenes'
+import ModuleSlide from './ModuleSlide'
 
 function renderBoldText(text) {
   const parts = text.split(/(\*\*.*?\*\*)/)
@@ -11,6 +13,22 @@ function renderBoldText(text) {
 }
 
 export default function Slide({ moduleTitle, sectionNumber, title, points }) {
+  const Scene = scenes[sectionNumber]
+
+  // New full-canvas scene — preferred if available for this section
+  if (Scene) {
+    return (
+      <ModuleSlide
+        moduleTitle={moduleTitle}
+        sectionNumber={sectionNumber}
+        title={title}
+        points={points}
+      >
+        <Scene />
+      </ModuleSlide>
+    )
+  }
+
   const Illustration = illustrations[sectionNumber]
 
   if (Illustration) {
