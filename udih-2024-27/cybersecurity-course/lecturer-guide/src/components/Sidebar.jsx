@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 
-export default function Sidebar({ groups, activeModuleId, activeSectionId, modulesData, onModuleSelect, onSectionSelect }) {
+export default function Sidebar({ groups, activeModuleId, activeSectionId, modulesData, onModuleSelect, onSectionSelect, selectedDay, onSelectDay }) {
   const [width, setWidth] = useState(() => {
     const saved = localStorage.getItem('sidebar-width')
     return saved ? Number(saved) : 380
@@ -44,26 +44,56 @@ export default function Sidebar({ groups, activeModuleId, activeSectionId, modul
       style={{ width: `${width}px` }}
     >
     <aside className="flex-1 h-full bg-gray-50 border-r border-gray-200 flex flex-col">
-      <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between gap-3 shrink-0 bg-gray-50 z-10">
-        <div>
-          <h1 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
-            Курс по киберсигурност
-          </h1>
-          <p className="text-xs text-gray-500 mt-1">Ръководство за лектора</p>
+      <div className="px-5 py-4 border-b border-gray-200 shrink-0 bg-gray-50 z-10 space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h1 className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+              Курс по киберсигурност
+            </h1>
+            <p className="text-xs text-gray-500 mt-1">Ръководство за лектора</p>
+          </div>
+          <a
+            href="/"
+            className="shrink-0 rounded-md bg-gray-200 px-2.5 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:bg-gray-300 hover:text-gray-800"
+            title="Към началната страница"
+          >
+            ← Начало
+          </a>
         </div>
-        <a
-          href="/"
-          className="shrink-0 rounded-md bg-gray-200 px-2.5 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:bg-gray-300 hover:text-gray-800"
-          title="Към началната страница"
-        >
-          ← Начало
-        </a>
+
+        {onSelectDay && (
+          <div
+            role="tablist"
+            aria-label="Избор на ден"
+            className="flex items-center gap-1 p-1 rounded-lg bg-gray-200/70 border border-gray-200"
+          >
+            {[1, 2].map((day) => {
+              const active = selectedDay === day
+              return (
+                <button
+                  key={day}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => onSelectDay(day)}
+                  className={`flex-1 px-3 h-8 rounded-md text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                    active
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-800 hover:bg-white/60'
+                  }`}
+                  title={day === 1 ? 'Само секции от Ден 1' : 'Само секции от Ден 2'}
+                >
+                  Ден {day}
+                </button>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       <nav className="p-3 flex-1 overflow-y-auto elegant-scroll [&_button]:cursor-pointer">
         {groups.map((group, gi) => (
           <div key={gi} className={gi > 0 ? 'mt-4' : ''}>
-            {group.label && (
+            {group.label && !onSelectDay && (
               <div className="px-3 py-1.5 mb-1">
                 <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
                   {group.label}
