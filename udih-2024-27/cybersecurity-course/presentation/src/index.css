@@ -203,3 +203,37 @@ html, body, #root {
   0%   { transform: translateY(0); }
   100% { transform: translateY(-50%); }
 }
+
+/* --- Q&A / Break idle motion --- */
+@keyframes qa-bob {
+  0%, 100% { transform: translateY(0)    scale(1);    }
+  50%      { transform: translateY(-8px) scale(1.02); }
+}
+
+/* --- Break "we are starting soon" done state --- */
+@keyframes break-breathe {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 6px 24px rgba(96,165,250,0.35));
+  }
+  50% {
+    transform: scale(1.035);
+    filter: drop-shadow(0 10px 44px rgba(244,114,182,0.55));
+  }
+}
+
+@keyframes break-shimmer {
+  0%   { background-position:    0% 50%; }
+  50%  { background-position:  100% 50%; }
+  100% { background-position:    0% 50%; }
+}
+
+@keyframes break-dot {
+  0%, 80%, 100% { opacity: 0.2; transform: translateY(0); }
+  40%          { opacity: 1;   transform: translateY(-6px); }
+}
+
+@keyframes break-halo-expand {
+  0%   { transform: scale(0.85); opacity: 0.55; }
+  100% { transform: scale(1.6);  opacity: 0;    }
+}

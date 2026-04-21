@@ -22,7 +22,14 @@ function ExitFullscreenIcon() {
   )
 }
 
-export default function Navigation({ current, total, onPrev, onNext }) {
+export default function Navigation({
+  current,
+  total,
+  onPrev,
+  onNext,
+  selectedDay,
+  onSelectDay,
+}) {
   const isFirst = current === 0
   const isLast = current === total - 1
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -41,10 +48,41 @@ export default function Navigation({ current, total, onPrev, onNext }) {
     }
   }, [])
 
-  const btnClass = "w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+  const btnClass = "w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer disabled:cursor-not-allowed"
+  const dayBtnClass =
+    "px-3 h-8 flex items-center justify-center rounded-md text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
 
   return (
     <div className="flex items-center gap-3">
+      {/* Day selector — switches visible slide deck */}
+      {onSelectDay && (
+        <div
+          className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 pr-2 mr-1 border border-slate-200"
+          role="tablist"
+          aria-label="Избор на ден"
+        >
+          {[1, 2].map(day => {
+            const active = selectedDay === day
+            return (
+              <button
+                key={day}
+                role="tab"
+                aria-selected={active}
+                onClick={() => onSelectDay(day)}
+                className={`${dayBtnClass} ${
+                  active
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-white'
+                }`}
+                title={day === 1 ? 'Ден 1 — само слайдовете за ден 1' : 'Ден 2 — само слайдовете за ден 2'}
+              >
+                Ден {day}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
       <button
         onClick={onPrev}
         disabled={isFirst}
