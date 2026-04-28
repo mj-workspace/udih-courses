@@ -1,4 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { formatTime, getPopupTargetSeconds } from '../utils/timing'
+
+function timerColor(elapsed, target) {
+  const ratio = target > 0 ? elapsed / target : 0
+  if (ratio < 0.85) return 'bg-emerald-50 text-emerald-700'
+  if (ratio <= 1) return 'bg-amber-100 text-amber-600'
+  return 'bg-red-100 text-red-700'
+}
 
 function renderFormattedText(text) {
   const parts = text.split(/(\*\*[^*]+\*\*|!![^!]+!!)/)
@@ -14,6 +22,9 @@ function renderFormattedText(text) {
 }
 
 export default function DetailPopup({ title, detail, onClose }) {
+  const [elapsed, setElapsed] = useState(0)
+  const target = getPopupTargetSeconds(detail)
+
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === 'Escape') onClose()
@@ -21,6 +32,11 @@ export default function DetailPopup({ title, detail, onClose }) {
     document.addEventListener('keydown', handleKey)
     return () => document.removeEventListener('keydown', handleKey)
   }, [onClose])
+
+  useEffect(() => {
+    const id = setInterval(() => setElapsed((s) => s + 1), 1000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div
@@ -40,12 +56,22 @@ export default function DetailPopup({ title, detail, onClose }) {
           <h3 className="text-base font-semibold text-gray-900 leading-snug">
             {renderFormattedText(title)}
           </h3>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-xl leading-none shrink-0 mt-0.5 cursor-pointer"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            <span
+              className={`tabular-nums text-sm font-medium px-2 py-0.5 rounded-md transition-colors ${timerColor(elapsed, target)}`}
+              title={`Цел: ${formatTime(target)} (изчислено по дължина на съдържанието)`}
+            >
+              {formatTime(elapsed)}
+              <span className="text-gray-400 mx-1">/</span>
+              <span className="text-gray-500">{formatTime(target)}</span>
+            </span>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 text-xl leading-none mt-0.5 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Body */}

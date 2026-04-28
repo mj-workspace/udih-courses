@@ -1,6 +1,25 @@
 import ContentBlock from './ContentBlock'
 import CollapsibleSection from './CollapsibleSection'
 import LinkCard from './LinkCard'
+import TimerBar from './TimerBar'
+import PauseSlide from './PauseSlide'
+import { getModuleTargetSeconds, getSectionTargetSeconds } from '../utils/timing'
+
+function isPauseModule(module) {
+  return !!module?.id && (module.id.startsWith('break-') || module.id.startsWith('qa-'))
+}
+
+function shortModuleLabel(module) {
+  const t = module?.title || ''
+  const colonIdx = t.indexOf(':')
+  if (colonIdx > 0) return t.slice(0, colonIdx).trim()
+  return t.length > 24 ? t.slice(0, 22) + '…' : t
+}
+
+function shortSectionLabel(section) {
+  if (!section) return ''
+  return `Подт. ${section.id}`
+}
 
 function SectionContent({ section }) {
   return (
@@ -19,9 +38,6 @@ function SectionContent({ section }) {
       )}
       {section.examples?.length > 0 && (
         <ContentBlock type="examples" content={section.examples} />
-      )}
-      {section.transition && (
-        <ContentBlock type="transition" content={section.transition} />
       )}
       {section.children?.map((child) => (
         <CollapsibleSection
@@ -46,20 +62,38 @@ export default function ModuleView({ module, activeSectionId, expandedSections, 
     )
   }
 
+  if (isPauseModule(module)) {
+    return <PauseSlide module={module} />
+  }
+
   const activeSection = module.sections.length > 1
     ? module.sections.find((s) => s.id === activeSectionId)
     : null
 
+  const moduleTarget = getModuleTargetSeconds(module)
+  const sectionTarget = activeSection ? getSectionTargetSeconds(module, activeSection.id) : 0
+  const sectionIds = (module.sections || []).map((s) => s.id)
+
   return (
     <div className="max-w-none">
       {/* Module header */}
-      <div className="mb-8 pb-5 border-b border-gray-100">
+      <div className="pb-3 border-b border-gray-100">
         <ContentBlock type="time-marker" content={`${module.timeMarker} · ${module.duration}`} />
         <h2 className="text-2xl font-bold text-gray-900 mt-3">{module.title}</h2>
         {module.note && (
           <p className="text-sm text-gray-500 mt-1 italic">{module.note}</p>
         )}
       </div>
+
+      {moduleTarget > 0 && (
+        <TimerBar
+          moduleLabel={shortModuleLabel(module)}
+          moduleTarget={moduleTarget}
+          sectionLabel={activeSection ? shortSectionLabel(activeSection) : ''}
+          sectionTarget={sectionTarget}
+          sectionIds={sectionIds}
+        />
+      )}
 
       <div>
         {module.sections.length === 1 ? (

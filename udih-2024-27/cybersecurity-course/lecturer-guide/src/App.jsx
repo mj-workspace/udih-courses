@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import Sidebar from './components/Sidebar'
 import ModuleView from './components/ModuleView'
 import NavigationControls from './components/NavigationControls'
+import { TimerProvider } from './components/TimerContext'
 import { sidebarGroups, navigationOrder, sectionToModule } from './data/navigation'
 import { modules } from './data/index'
 
@@ -130,32 +131,34 @@ export default function App() {
   const activeModule = modules[activeModuleId]
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
-      <Sidebar
-        groups={visibleGroups}
-        activeModuleId={activeModuleId}
-        activeSectionId={activeSectionId}
-        modulesData={modules}
-        onModuleSelect={handleModuleSelect}
-        onSectionSelect={handleSectionSelect}
-        selectedDay={selectedDay}
-        onSelectDay={handleSelectDay}
-      />
-
-      <main className="flex-1 p-8 pb-24 overflow-y-auto h-screen text-[17px] elegant-scroll">
-        <ModuleView
-          module={activeModule}
+    <TimerProvider activeModuleId={activeModuleId} activeSectionId={activeSectionId}>
+      <div className="flex h-screen bg-white overflow-hidden">
+        <Sidebar
+          groups={visibleGroups}
+          activeModuleId={activeModuleId}
           activeSectionId={activeSectionId}
-          expandedSections={expandedSections}
-          onToggleSection={handleToggleSection}
+          modulesData={modules}
+          onModuleSelect={handleModuleSelect}
+          onSectionSelect={handleSectionSelect}
+          selectedDay={selectedDay}
+          onSelectDay={handleSelectDay}
         />
-      </main>
 
-      <NavigationControls
-        currentSectionId={activeSectionId}
-        navigationOrder={dayNavigationOrder}
-        onNavigate={handleNavigate}
-      />
-    </div>
+        <main className="flex-1 p-8 pb-24 overflow-y-auto h-screen text-[17px] elegant-scroll">
+          <ModuleView
+            module={activeModule}
+            activeSectionId={activeSectionId}
+            expandedSections={expandedSections}
+            onToggleSection={handleToggleSection}
+          />
+        </main>
+
+        <NavigationControls
+          currentSectionId={activeSectionId}
+          navigationOrder={dayNavigationOrder}
+          onNavigate={handleNavigate}
+        />
+      </div>
+    </TimerProvider>
   )
 }
