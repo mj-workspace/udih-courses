@@ -12,6 +12,8 @@ function readStorage() {
     return {
       moduleTimers: parsed.moduleTimers && typeof parsed.moduleTimers === 'object' ? parsed.moduleTimers : {},
       sectionTimers: parsed.sectionTimers && typeof parsed.sectionTimers === 'object' ? parsed.sectionTimers : {},
+      popupTimers: parsed.popupTimers && typeof parsed.popupTimers === 'object' ? parsed.popupTimers : {},
+      pausedSections: parsed.pausedSections && typeof parsed.pausedSections === 'object' ? parsed.pausedSections : {},
     }
   } catch {
     return null
@@ -33,33 +35,40 @@ export function TimerProvider({ activeModuleId, activeSectionId, children }) {
   const initial = readStorage()
   const [moduleTimers, setModuleTimers] = useState(() => initial?.moduleTimers || {})
   const [sectionTimers, setSectionTimers] = useState(() => initial?.sectionTimers || {})
+  const [popupTimers, setPopupTimers] = useState(() => initial?.popupTimers || {})
+  const [pausedSections, setPausedSections] = useState(() => initial?.pausedSections || {})
   const [isRunning, setIsRunning] = useState(false)
 
   const moduleIdRef = useRef(activeModuleId)
   const sectionIdRef = useRef(activeSectionId)
+  const pausedRef = useRef(pausedSections)
   useEffect(() => { moduleIdRef.current = activeModuleId }, [activeModuleId])
   useEffect(() => { sectionIdRef.current = activeSectionId }, [activeSectionId])
+  useEffect(() => { pausedRef.current = pausedSections }, [pausedSections])
 
   useEffect(() => {
     if (!isRunning) return
     const id = setInterval(() => {
       const mid = moduleIdRef.current
       const sid = sectionIdRef.current
+      const sectionPaused = !!(sid && pausedRef.current[sid])
       setModuleTimers((prev) => {
         if (!mid) return prev
         return { ...prev, [mid]: (prev[mid] || 0) + 1 }
       })
-      setSectionTimers((prev) => {
-        if (!sid) return prev
-        return { ...prev, [sid]: (prev[sid] || 0) + 1 }
-      })
+      if (!sectionPaused) {
+        setSectionTimers((prev) => {
+          if (!sid) return prev
+          return { ...prev, [sid]: (prev[sid] || 0) + 1 }
+        })
+      }
     }, 1000)
     return () => clearInterval(id)
   }, [isRunning])
 
   useEffect(() => {
-    writeStorage({ moduleTimers, sectionTimers })
-  }, [moduleTimers, sectionTimers])
+    writeStorage({ moduleTimers, sectionTimers, popupTimers, pausedSections })
+  }, [moduleTimers, sectionTimers, popupTimers, pausedSections])
 
   const start = useCallback(() => setIsRunning(true), [])
   const pause = useCallback(() => setIsRunning(false), [])
@@ -93,6 +102,8 @@ export function TimerProvider({ activeModuleId, activeSectionId, children }) {
   const resetAll = useCallback(() => {
     setModuleTimers({})
     setSectionTimers({})
+    setPopupTimers({})
+    setPausedSections({})
     setIsRunning(false)
   }, [])
 
@@ -108,9 +119,42 @@ export function TimerProvider({ activeModuleId, activeSectionId, children }) {
     setSectionTimers((prev) => ({ ...prev, [sectionId]: value }))
   }, [])
 
+  const setPopupElapsed = useCallback((pointId, seconds) => {
+    if (!pointId) return
+    const value = Math.max(0, Math.floor(seconds))
+    setPopupTimers((prev) => ({ ...prev, [pointId]: value }))
+  }, [])
+
+  const resetPopup = useCallback((pointId) => {
+    if (!pointId) return
+    setPopupTimers((prev) => {
+      if (!(pointId in prev)) return prev
+      const next = { ...prev }
+      delete next[pointId]
+      return next
+    })
+  }, [])
+
+  const togglePauseSection = useCallback((sectionId) => {
+    if (!sectionId) return
+    setPausedSections((prev) => {
+      const next = { ...prev }
+      if (next[sectionId]) delete next[sectionId]
+      else next[sectionId] = true
+      return next
+    })
+  }, [])
+
+  const isSectionPaused = useCallback(
+    (sectionId) => !!(sectionId && pausedSections[sectionId]),
+    [pausedSections],
+  )
+
   const value = {
     moduleElapsed: moduleTimers[activeModuleId] || 0,
     sectionElapsed: sectionTimers[activeSectionId] || 0,
+    popupTimers,
+    pausedSections,
     activeModuleId,
     activeSectionId,
     isRunning,
@@ -122,6 +166,10 @@ export function TimerProvider({ activeModuleId, activeSectionId, children }) {
     resetAll,
     setModuleElapsed,
     setSectionElapsed,
+    setPopupElapsed,
+    resetPopup,
+    togglePauseSection,
+    isSectionPaused,
   }
 
   return <TimerContext.Provider value={value}>{children}</TimerContext.Provider>

@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import Sidebar from './components/Sidebar'
 import ModuleView from './components/ModuleView'
-import NavigationControls from './components/NavigationControls'
 import { TimerProvider } from './components/TimerContext'
+import { ProgressProvider } from './components/ProgressContext'
 import { sidebarGroups, navigationOrder, sectionToModule } from './data/navigation'
 import { modules } from './data/index'
 
@@ -73,11 +73,6 @@ export default function App() {
     return g ? [g] : []
   }, [selectedDay])
 
-  const dayNavigationOrder = useMemo(
-    () => buildDayOrder(selectedDay),
-    [selectedDay],
-  )
-
   const handleModuleSelect = useCallback((moduleId) => {
     setActiveModuleId(moduleId)
     const firstSection = navigationOrder.find((sid) => sectionToModule[sid] === moduleId)
@@ -108,15 +103,6 @@ export default function App() {
     })
   }, [])
 
-  const handleNavigate = useCallback((sectionId) => {
-    const targetModule = sectionToModule[sectionId]
-    if (targetModule) {
-      setActiveModuleId(targetModule)
-    }
-    setActiveSectionId(sectionId)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
-
   const handleSelectDay = useCallback((day) => {
     if (day === selectedDay) return
     const order = buildDayOrder(day)
@@ -132,6 +118,7 @@ export default function App() {
 
   return (
     <TimerProvider activeModuleId={activeModuleId} activeSectionId={activeSectionId}>
+      <ProgressProvider>
       <div className="flex h-screen bg-white overflow-hidden">
         <Sidebar
           groups={visibleGroups}
@@ -152,13 +139,8 @@ export default function App() {
             onToggleSection={handleToggleSection}
           />
         </main>
-
-        <NavigationControls
-          currentSectionId={activeSectionId}
-          navigationOrder={dayNavigationOrder}
-          onNavigate={handleNavigate}
-        />
       </div>
+      </ProgressProvider>
     </TimerProvider>
   )
 }

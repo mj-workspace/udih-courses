@@ -124,24 +124,44 @@ function EditableTime({ elapsed, onCommit, accent }) {
   )
 }
 
-function ProgressRow({ label, elapsed, target, onCommit }) {
+function ProgressRow({ label, elapsed, target, onCommit, paused = false, onTogglePause = null }) {
   const { color, text, border } = getStatus(elapsed, target)
   const overrun = target > 0 && elapsed > target
   const overBy = overrun ? elapsed - target : 0
+  const dim = paused ? 'opacity-50' : ''
 
   return (
-    <div className="flex items-center gap-3 min-w-0">
-      <span className="text-xs font-medium text-gray-600 w-28 shrink-0 truncate">{label}</span>
-      <div className="flex items-baseline gap-1.5 shrink-0">
+    <div className="flex items-center gap-2 min-w-0">
+      {onTogglePause ? (
+        <button
+          type="button"
+          onClick={onTogglePause}
+          title={paused ? 'Подт. е спряна — цъкни за да я пуснеш' : 'Спри само таймера на подт. (модулният продължава)'}
+          aria-label={paused ? 'Пусни подт. таймера' : 'Спри подт. таймера'}
+          className={`shrink-0 w-5 h-5 inline-flex items-center justify-center rounded-full text-[10px] cursor-pointer transition-colors ${
+            paused
+              ? 'bg-amber-100 text-amber-700 hover:bg-amber-200 ring-1 ring-amber-300'
+              : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
+          }`}
+        >
+          {paused ? '▶' : '⏸'}
+        </button>
+      ) : (
+        <span className="shrink-0 w-5" aria-hidden="true" />
+      )}
+      <span className={`text-xs font-medium w-24 shrink-0 truncate ${paused ? 'text-amber-700 italic' : 'text-gray-600'}`}>{label}</span>
+      <div className={`flex items-baseline gap-1.5 shrink-0 ${dim}`}>
         <EditableTime elapsed={elapsed} onCommit={onCommit} accent={text} />
         <span className="text-xs text-gray-400 tabular-nums">/ {formatTime(target)}</span>
       </div>
-      <ScrubBar elapsed={elapsed} target={target} color={color} border={border} onScrub={onCommit} />
-      {overrun && (
-        <span className="text-[11px] font-medium text-red-600 tabular-nums shrink-0">
-          +{formatTime(overBy)}
-        </span>
-      )}
+      <div className={`flex-1 min-w-0 flex items-center gap-3 ${dim}`}>
+        <ScrubBar elapsed={elapsed} target={target} color={color} border={border} onScrub={onCommit} />
+        {overrun && (
+          <span className="text-[11px] font-medium text-red-600 tabular-nums shrink-0">
+            +{formatTime(overBy)}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
@@ -165,7 +185,11 @@ export default function TimerBar({
     resetAll,
     setModuleElapsed,
     setSectionElapsed,
+    isSectionPaused,
+    togglePauseSection,
   } = useTimer()
+
+  const sectionPaused = isSectionPaused(activeSectionId)
 
   const confirmAndRun = (message, fn) => {
     if (typeof window !== 'undefined' && !window.confirm(message)) return
@@ -213,6 +237,8 @@ export default function TimerBar({
               elapsed={sectionElapsed}
               target={sectionTarget}
               onCommit={(secs) => setSectionElapsed(activeSectionId, secs)}
+              paused={sectionPaused}
+              onTogglePause={() => togglePauseSection(activeSectionId)}
             />
           )}
         </div>

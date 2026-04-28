@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { formatTime, getPopupTargetSeconds } from '../utils/timing'
+import { usePopupBudgetModule } from './PopupBudgetContext'
+import { useProgress } from './ProgressContext'
+import { useTimer } from './TimerContext'
 
 function timerColor(elapsed, target) {
   const ratio = target > 0 ? elapsed / target : 0
@@ -21,27 +24,85 @@ function renderFormattedText(text) {
   })
 }
 
-export default function DetailPopup({ title, detail, onClose }) {
-  const [elapsed, setElapsed] = useState(0)
-  const target = getPopupTargetSeconds(detail)
+export default function DetailPopup({ title, detail, onClose, pointId = null }) {
+  const module = usePopupBudgetModule()
+  const target = getPopupTargetSeconds(detail, module)
+  const { setCovered, setLastOpened, isCovered } = useProgress()
+  const {
+    popupTimers,
+    setPopupElapsed,
+    resetPopup,
+    isRunning,
+    isSectionPaused,
+    activeSectionId,
+  } = useTimer()
+
+  const persistedElapsed = pointId ? popupTimers[pointId] || 0 : 0
+  const [elapsed, setElapsed] = useState(persistedElapsed)
+
+  // Re-sync if persisted value changes from outside (reset, scrub elsewhere)
+  useEffect(() => {
+    setElapsed(persistedElapsed)
+  }, [persistedElapsed])
+
+  const covered = pointId ? isCovered(pointId) : false
+  const sectionPaused = isSectionPaused(activeSectionId)
+  const shouldTick = !!pointId && isRunning && !sectionPaused && !covered
+
+  const handleClose = () => {
+    if (pointId) setLastOpened(pointId)
+    onClose()
+  }
+
+  const handleConfirm = () => {
+    if (pointId) {
+      setCovered(pointId, true)
+      setLastOpened(pointId)
+    }
+    onClose()
+  }
+
+  const handleResetTimer = () => {
+    if (!pointId) return
+    resetPopup(pointId)
+    setElapsed(0)
+  }
 
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') handleClose()
     }
     document.addEventListener('keydown', handleKey)
     return () => document.removeEventListener('keydown', handleKey)
-  }, [onClose])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onClose, pointId])
 
   useEffect(() => {
-    const id = setInterval(() => setElapsed((s) => s + 1), 1000)
+    if (!shouldTick) return
+    const id = setInterval(() => {
+      setElapsed((s) => {
+        const next = s + 1
+        if (pointId) setPopupElapsed(pointId, next)
+        return next
+      })
+    }, 1000)
     return () => clearInterval(id)
-  }, [])
+  }, [shouldTick, pointId, setPopupElapsed])
+
+  const tickStateLabel = !pointId
+    ? null
+    : covered
+      ? 'паузиран (точката е маркирана)'
+      : sectionPaused
+        ? 'паузиран (секцията е на пауза)'
+        : !isRunning
+          ? 'паузиран (глобална пауза)'
+          : 'активен'
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      onClick={onClose}
+      onClick={handleClose}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
@@ -57,17 +118,46 @@ export default function DetailPopup({ title, detail, onClose }) {
             {renderFormattedText(title)}
           </h3>
           <div className="flex items-center gap-3 shrink-0">
-            <span
-              className={`tabular-nums text-sm font-medium px-2 py-0.5 rounded-md transition-colors ${timerColor(elapsed, target)}`}
-              title={`Цел: ${formatTime(target)} (изчислено по дължина на съдържанието)`}
-            >
-              {formatTime(elapsed)}
-              <span className="text-gray-400 mx-1">/</span>
-              <span className="text-gray-500">{formatTime(target)}</span>
-            </span>
+            {pointId && (
+              <button
+                type="button"
+                onClick={handleConfirm}
+                title="Маркирай точката като казана и затвори"
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors cursor-pointer"
+              >
+                <span aria-hidden="true">✓</span> Готово
+              </button>
+            )}
+            <div className="flex items-center gap-1">
+              <span
+                className={`tabular-nums text-sm font-medium px-2 py-0.5 rounded-md transition-colors ${timerColor(elapsed, target)} ${
+                  pointId && !shouldTick ? 'opacity-70' : ''
+                }`}
+                title={
+                  tickStateLabel
+                    ? `Цел: ${formatTime(target)} · таймер ${tickStateLabel}`
+                    : `Цел: ${formatTime(target)}`
+                }
+              >
+                {formatTime(elapsed)}
+                <span className="text-gray-400 mx-1">/</span>
+                <span className="text-gray-500">{formatTime(target)}</span>
+              </span>
+              {pointId && (
+                <button
+                  type="button"
+                  onClick={handleResetTimer}
+                  title="Нулирай таймера на този popup"
+                  className="text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md px-1.5 py-0.5 cursor-pointer transition-colors text-sm leading-none"
+                >
+                  ⟲
+                </button>
+              )}
+            </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 text-xl leading-none mt-0.5 cursor-pointer"
+              title="Затвори без маркиране (запазва кой беше последният popup)"
             >
               ✕
             </button>

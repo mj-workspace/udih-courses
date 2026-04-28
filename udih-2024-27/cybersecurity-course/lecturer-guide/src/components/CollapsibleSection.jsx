@@ -9,7 +9,8 @@ const depthColors = [
   'border-l-gray-300',
 ]
 
-export default function CollapsibleSection({ section, depth = 0, isExpanded, onToggle, expandedSections }) {
+export default function CollapsibleSection({ section, moduleId, depth = 0, isExpanded, onToggle, expandedSections }) {
+  const pathPrefix = moduleId ? `${moduleId}::${section.id}` : null
   const contentRef = useRef(null)
   const [height, setHeight] = useState(0)
 
@@ -63,7 +64,7 @@ export default function CollapsibleSection({ section, depth = 0, isExpanded, onT
       >
         <div ref={contentRef} className={`pb-3 space-y-3 ${depth === 0 ? 'ml-3 pl-4 border-l-2 border-blue-200' : 'px-3'}`}>
           {section.talkingPoints && section.talkingPoints.length > 0 && (
-            <ContentBlock type="talking-points" content={section.talkingPoints} />
+            <ContentBlock type="talking-points" content={section.talkingPoints} pathPrefix={pathPrefix} />
           )}
 
           {section.linkCard && (
@@ -71,13 +72,14 @@ export default function CollapsibleSection({ section, depth = 0, isExpanded, onT
           )}
 
           {section.examples && section.examples.length > 0 && (
-            <ContentBlock type="examples" content={section.examples} />
+            <ContentBlock type="examples" content={section.examples} pathPrefix={pathPrefix} />
           )}
 
           {section.children && section.children.map((child) => (
             <CollapsibleSection
               key={child.id}
               section={child}
+              moduleId={moduleId}
               depth={depth + 1}
               isExpanded={expandedSections.has(child.id)}
               onToggle={onToggle}
