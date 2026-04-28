@@ -33,7 +33,7 @@ function makeBreak(id, title, duration, timeMarker) {
     title,
     duration,
     timeMarker,
-    sections: [{ id: `${id}-main`, title, talkingPoints: [], examples: [], transition: '' }],
+    sections: [{ id: `${id}-main`, title, talkingPoints: [], examples: [] }],
   }
 }
 

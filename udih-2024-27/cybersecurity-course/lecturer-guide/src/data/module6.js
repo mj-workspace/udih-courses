@@ -83,7 +83,6 @@ export const module6 = {
         },
       ],
       examples: [],
-      transition: 'Имаме политики. Но когато се случи инцидент — какво правим?',
     },
     {
       id: '6.2',
@@ -133,7 +132,6 @@ export const module6 = {
         },
       ],
       examples: [],
-      transition: 'Инцидентите ще се случват. Въпросът е колко бързо ще се възстановим — това е темата за устойчивост.',
     },
     {
       id: '6.3',
@@ -201,7 +199,6 @@ export const module6 = {
         },
       ],
       examples: [],
-      transition: 'Да обобщим всичко, което научихме за два дни!',
     },
     {
       id: '6.4',
@@ -244,7 +241,6 @@ export const module6 = {
         },
       ],
       examples: [],
-      transition: '',
     },
   ],
 }

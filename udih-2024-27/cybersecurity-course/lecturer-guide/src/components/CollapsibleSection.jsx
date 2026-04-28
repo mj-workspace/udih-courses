@@ -74,10 +74,6 @@ export default function CollapsibleSection({ section, depth = 0, isExpanded, onT
             <ContentBlock type="examples" content={section.examples} />
           )}
 
-          {section.transition && (
-            <ContentBlock type="transition" content={section.transition} />
-          )}
-
           {section.children && section.children.map((child) => (
             <CollapsibleSection
               key={child.id}

@@ -216,18 +216,6 @@ function Examples({ content }) {
   )
 }
 
-function Transition({ content }) {
-  return (
-    <div className="flex items-start gap-3 py-3 px-4 bg-green-50/60 rounded-lg border border-green-100">
-      <span className="text-green-500 text-lg mt-0.5">→</span>
-      <div>
-        <span className="text-[11px] font-semibold text-green-600 uppercase tracking-wider">ПРЕХОД</span>
-        <p className="text-gray-600 mt-1 italic leading-relaxed">{content}</p>
-      </div>
-    </div>
-  )
-}
-
 function TimeMarker({ content }) {
   return (
     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-purple-50 text-purple-700 border border-purple-200">
@@ -241,6 +229,5 @@ export default function ContentBlock({ type, content }) {
   if (type === 'time-marker') return <TimeMarker content={content} />
   if (type === 'talking-points') return <TalkingPoints content={content} />
   if (type === 'examples') return <Examples content={content} />
-  if (type === 'transition') return <Transition content={content} />
   return null
 }

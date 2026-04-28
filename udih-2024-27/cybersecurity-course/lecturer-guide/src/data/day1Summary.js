@@ -35,7 +35,6 @@ export const day1Summary = {
         { text: 'Приятна вечер и до утре!' },
       ],
       examples: [],
-      transition: '',
     },
   ],
 }
