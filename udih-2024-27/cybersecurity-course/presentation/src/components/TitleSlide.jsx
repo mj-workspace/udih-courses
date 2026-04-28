@@ -156,7 +156,7 @@ export default function TitleSlide() {
         {/* Body: lecturer | QR hero | lecturer */}
         <div className="flex items-center justify-center gap-16">
           <LecturerCard
-            avatar={`${base}assets/tuntova-avatar.png`}
+            avatar={`${base}assets/tuntova-avatar2.png`}
             name="доц. д-р Атанаска Тунтова"
             role="Декан и преподавател"
             expertise="Експерт в киберсигурността. Над 10 години преподавателски опит."
