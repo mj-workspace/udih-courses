@@ -17,6 +17,16 @@ export default defineConfig({
         rewrite: () => '/cybersecurity/lecturer-guide/program.html',
       },
       '/cybersecurity/lecturer-guide': 'http://localhost:5174',
+      '/digital-fundamentals/entry-exam': {
+        target: 'http://localhost:5176',
+        rewrite: () => '/digital-fundamentals/lecturer-guide/entry-exam.html',
+      },
+      '/digital-fundamentals/program': {
+        target: 'http://localhost:5176',
+        rewrite: () => '/digital-fundamentals/lecturer-guide/program.html',
+      },
+      '/digital-fundamentals/lecturer-guide': 'http://localhost:5176',
+      '/digital-fundamentals/presentation': 'http://localhost:5177',
     },
   },
 })

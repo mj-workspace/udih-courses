@@ -21,6 +21,7 @@ export const programs = [
           totalMinutes: 180,
         },
         status: 'active',
+        surveyUrl: 'https://forms.gle/quQP55M6DyodSc2Y7',
         meetLink: {
           url: 'https://udih.anis.bg/meet-digital-fundamentals',
           directUrl: 'https://meet.google.com/ufr-gurh-enq',
@@ -83,8 +84,81 @@ export const programs = [
             ],
           },
         ],
-        schedule: [],
-        resources: [],
+        schedule: [
+          {
+            day: 'Ден 1',
+            timeRange: '09:30 – 17:00',
+            summary: '360 мин (6 часа) — Модули 1–5 + начало на Модул 6',
+            items: [
+              { time: '09:30 – 09:40', title: 'Откриване на курса и въведение — Представяне, организационни бележки, цели на обучението', duration: 10, type: 'intro' },
+              { time: '09:40 – 10:30', title: 'Модул 1 — Основи на компютъра и операционни системи', duration: 50, type: 'module' },
+              { time: '10:30 – 10:40', title: 'Въпроси и отговори', duration: 10, type: 'qa' },
+              { time: '10:40 – 10:55', title: 'Почивка', duration: 15, type: 'break' },
+              { time: '10:55 – 11:55', title: 'Модул 2 — Интернет и мрежови технологии', duration: 60, type: 'module' },
+              { time: '11:55 – 12:05', title: 'Въпроси и отговори', duration: 10, type: 'qa' },
+              { time: '12:05 – 13:05', title: 'Обедна почивка', duration: 60, type: 'break' },
+              { time: '13:05 – 13:55', title: 'Модул 3 — Имейл комуникация: акаунти, календар, задачи, контакти', duration: 50, type: 'module' },
+              { time: '13:55 – 14:05', title: 'Въпроси и отговори', duration: 10, type: 'qa' },
+              { time: '14:05 – 14:20', title: 'Почивка', duration: 15, type: 'break' },
+              { time: '14:20 – 15:30', title: 'Модул 4 — Мобилни устройства и приложения', duration: 70, type: 'module' },
+              { time: '15:30 – 15:40', title: 'Въпроси и отговори', duration: 10, type: 'qa' },
+              { time: '15:40 – 16:20', title: 'Модул 5 — Видеоконферентни платформи (Zoom, Google Meet, Teams, Webex)', duration: 40, type: 'module' },
+              { time: '16:20 – 16:50', title: 'Модул 6 — Социални мрежи (Част 1 — Въведение)', duration: 30, type: 'module' },
+              { time: '16:50 – 17:00', title: 'Обобщение и закриване на Ден 1', duration: 10, type: 'intro' },
+            ],
+          },
+          {
+            day: 'Ден 2',
+            timeRange: '09:30 – 17:00',
+            summary: '240 мин (4 часа) + Изпит: 120 мин (2 часа)',
+            items: [
+              { time: '09:30 – 09:40', title: 'Откриване и кратък преговор — Основни теми от Ден 1', duration: 10, type: 'intro' },
+              { time: '09:40 – 11:10', title: 'Модул 6 — Социални мрежи (Част 2 — Задълбочаване и сигурност)', duration: 90, type: 'module' },
+              { time: '11:10 – 11:20', title: 'Въпроси и отговори', duration: 10, type: 'qa' },
+              { time: '11:20 – 11:35', title: 'Почивка', duration: 15, type: 'break' },
+              { time: '11:35 – 12:35', title: 'Модул 7 — Изкуствен интелект (Част 1 — Въведение, ChatGPT, Claude)', duration: 60, type: 'module' },
+              { time: '12:35 – 13:35', title: 'Обедна почивка', duration: 60, type: 'break' },
+              { time: '13:35 – 14:35', title: 'Модул 7 — Изкуствен интелект (Част 2 — Практическа работа и приложения)', duration: 60, type: 'module' },
+              { time: '14:35 – 14:45', title: 'Въпроси и отговори', duration: 10, type: 'qa' },
+              { time: '14:45 – 15:00', title: 'Почивка', duration: 15, type: 'break' },
+              { time: '15:00 – 17:00', title: 'Финален изпит — Тест в Google Forms', duration: 120, type: 'exam' },
+            ],
+          },
+        ],
+        organizerEmailContent: `Линкове и информация за организаторите относно курса "Въведение в дигиталната грамотност (Реф. № 001)"
+
+Линк за присъединяване в Google Meet:
+https://udih.anis.bg/meet-digital-fundamentals
+
+Линк за сваляне на програмата:
+https://udih.anis.bg/digital-fundamentals/program/
+
+Линк към презентацията:
+https://udih.anis.bg/digital-fundamentals/presentation/
+
+Линк за сваляне на входния изпит:
+https://udih.anis.bg/digital-fundamentals/entry-exam/
+
+Линк към Google Drive с архиви на записите и резултатите от финалния изпит:
+https://drive.google.com/drive/folders/1yjy7pDOy1fmXh90w4TpPc2tyyHJ13fjd?usp=sharing`,
+        presentationUrl: '/digital-fundamentals/presentation/',
+        resources: [
+          {
+            label: 'Програма',
+            url: '/digital-fundamentals/program/',
+            type: 'document',
+          },
+          {
+            label: 'Входен изпит',
+            url: '/digital-fundamentals/entry-exam/',
+            type: 'document',
+          },
+          {
+            label: 'Ръководство за лектора',
+            url: '/digital-fundamentals/lecturer-guide/',
+            type: 'app',
+          },
+        ],
       },
       {
         id: 'cybersecurity',

@@ -201,7 +201,7 @@ export default function CourseCard({ course }) {
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
                   <span className="underline decoration-green-300 underline-offset-2 hover:text-green-900">
-                    forms.gle/quQP55M6DyodSc2Y7
+                    {course.surveyUrl.replace(/^https?:\/\//, '')}
                   </span>
                 </a>
                 <CopyPill text={course.surveyUrl} />
