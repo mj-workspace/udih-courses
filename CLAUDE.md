@@ -50,6 +50,10 @@ All content is in **Bulgarian**. Technical terms use English equivalents where s
 | program | cybersecurity-course | `/cybersecurity/program/` |
 | presentation | cybersecurity-course | `/cybersecurity/presentation/` |
 | lecturer-guide | cybersecurity-course | `/cybersecurity/lecturer-guide/` |
+| entry-exam | digital-fundamentals | `/digital-fundamentals/entry-exam/` |
+| program | digital-fundamentals | `/digital-fundamentals/program/` |
+| presentation | digital-fundamentals | `/digital-fundamentals/presentation/` |
+| lecturer-guide | digital-fundamentals | `/digital-fundamentals/lecturer-guide/` |
 
 ### Adding a new deployed app
 
