@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Входен изпит — Въведение в дигиталната грамотност</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        /* Toolbar — hidden in print */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: #166534;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .toolbar-title {
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .toolbar button {
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .btn-answers {
+            background: #fff;
+            color: #166534;
+        }
+        .btn-answers:hover { background: #dcfce7; }
+
+        .btn-clean {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+        }
+        .btn-clean:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-back {
+            text-decoration: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-link {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+        }
+        .btn-link:hover { background: rgba(255,255,255,0.25); }
+
+        /* Exam content */
+        .exam {
+            max-width: 210mm;
+            margin: 24px auto;
+            padding: 40px;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        /* Title */
+        .exam-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #166534;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .exam-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Participant info */
+        .participant-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .participant-field {
+            flex: 1;
+        }
+
+        .participant-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .participant-field .line {
+            border-bottom: 1px solid #cbd5e1;
+            height: 24px;
+        }
+
+        /* Instructions */
+        .instructions {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        /* Questions */
+        .question {
+            margin-bottom: 22px;
+            page-break-inside: avoid;
+        }
+
+        .question-text {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #166534;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .options {
+            list-style: none;
+            padding-left: 34px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .option-marker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .option-text {
+            font-size: 13px;
+            color: #475569;
+            padding-top: 1px;
+        }
+
+        /* Correct answer highlight */
+        .option.correct .option-marker {
+            background: #166534;
+            border-color: #166534;
+            color: #fff;
+        }
+        .option.correct .option-text {
+            color: #166534;
+            font-weight: 600;
+        }
+
+        /* Hide/show answers */
+        body:not(.show-answers) .option.correct .option-marker {
+            background: transparent;
+            border-color: #cbd5e1;
+            color: #94a3b8;
+        }
+        body:not(.show-answers) .option.correct .option-text {
+            color: #475569;
+            font-weight: 400;
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: #fff; }
+            .toolbar { display: none !important; }
+            .exam { margin: 0; padding: 0; box-shadow: none; }
+
+            @page {
+                size: A4;
+                margin: 18mm 15mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <a href="/" class="btn-back" title="Към началната страница">&larr; Начало</a>
+        <span class="toolbar-title">Входен изпит — Дигитална грамотност</span>
+        <button class="btn-link" onclick="copyLink()" title="Копирай линк към изпита">Копирай линк</button>
+        <button class="btn-answers" onclick="toggleAnswers()">Покажи верните отговори</button>
+        <button class="btn-clean" onclick="downloadPdf(false)">Свали PDF (без отговори)</button>
+        <button class="btn-answers" onclick="downloadPdf(true)">Свали PDF (с отговори)</button>
+    </div>
+
+    <div class="exam">
+        <h1 class="exam-title">Входен изпит</h1>
+        <div class="exam-subtitle">Въведение в дигиталната грамотност (Реф. № 001)</div>
+
+        <div class="participant-info">
+            <div class="participant-field">
+                <label>Име и фамилия</label>
+                <div class="line"></div>
+            </div>
+            <div class="participant-field" style="flex: 0.4;">
+                <label>Дата</label>
+                <div class="line"></div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            Отбележете верния отговор за всеки въпрос. Няма ограничение за време.
+        </div>
+
+        <!-- Въпрос 1 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">1</span>
+                Каква роля играе RAM (Random Access Memory) в компютъра?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Дълготрайно съхранение на файлове и програми</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Временна работна памет за активно използваните данни и програми</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Извършване на математическите и логическите операции на компютъра</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Връзка с интернет и обмен на данни през мрежата</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 2 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">2</span>
+                Кое от изброеното НЕ е операционна система?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">macOS</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Linux</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">Microsoft Office</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Android</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 3 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">3</span>
+                Каква е основната разлика между HTTP и HTTPS?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">HTTP е по-бърз, HTTPS е по-бавен, но без разлика в сигурността</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">HTTPS криптира връзката между браузъра и уебсайта, HTTP — не</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">HTTP се използва за имейли, а HTTPS — за уебсайтове</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">HTTPS е остаряла версия на HTTP, която вече не се поддържа</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 4 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">4</span>
+                Каква е основната функция на DNS (Domain Name System)?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Криптира трафика между устройствата в мрежата</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Преобразува имена на домейни (напр. udih.anis.bg) в IP адреси</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Разпределя интернет връзката между устройствата в Wi-Fi мрежата</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Блокира нежелани уебсайтове на ниво рутер</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 5 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">5</span>
+                Какво означава полето BCC в имейл съобщение?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Адресът на подателя на писмото</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Темата (subject) на писмото</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">Скрито копие — получателите не виждат останалите BCC адреси</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Маркер за по-висока важност на писмото</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 6 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">6</span>
+                Каква е целта на разрешенията (permissions) в мобилните приложения?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Да ограничат броя на инсталираните приложения на устройството</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Да определят до кои функции и данни на устройството има достъп приложението</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Да контролират колко често приложението се актуализира автоматично</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Да определят дали приложението е платено или безплатно</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 7 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">7</span>
+                Кое от следните е специфично ограничение на безплатния план на Zoom?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Максимум 5 участници в една среща</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Срещите не могат да бъдат записвани</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">Срещите с 3 или повече участници имат лимит от около 40 минути</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Не се поддържа споделяне на екран</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 8 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">8</span>
+                Коя социална мрежа е насочена основно към професионални контакти и кариерно развитие?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">TikTok</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Instagram</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">LinkedIn</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Facebook</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 9 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">9</span>
+                Какво представляват „фалшивите новини" (fake news) в социалните мрежи?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Реклами, които не отговарят на интересите на потребителя</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">По-стари новини, които алгоритъмът отново показва в емисията</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">Преднамерено разпространявана невярна или подвеждаща информация</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Публикации, направени от профил без снимка</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 10 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">10</span>
+                Какво представлява „промпт" (prompt) при работа с AI асистент като ChatGPT или Claude?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Времето за изчакване, преди моделът да върне отговор</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Текстовата инструкция или въпрос, които потребителят задава на модела</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Името на конкретната версия на езиковия модел</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Кодът за достъп до платените функции на услугата</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 11 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">11</span>
+                Кое от изброените е голям езиков модел (LLM) / AI асистент?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Adobe Photoshop</span></li>
+                <li class="option correct"><span class="option-marker">Б</span><span class="option-text">Claude</span></li>
+                <li class="option"><span class="option-marker">В</span><span class="option-text">Windows 11</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Microsoft Excel</span></li>
+            </ul>
+        </div>
+
+        <!-- Въпрос 12 -->
+        <div class="question">
+            <div class="question-text">
+                <span class="question-number">12</span>
+                Кое от следните НЕ бива да въвеждате в AI асистент при работа в служебна среда?
+            </div>
+            <ul class="options">
+                <li class="option"><span class="option-marker">А</span><span class="option-text">Текст от публикувана новина за обобщение</span></li>
+                <li class="option"><span class="option-marker">Б</span><span class="option-text">Идеи и чернова за служебен имейл без лични данни</span></li>
+                <li class="option correct"><span class="option-marker">В</span><span class="option-text">ЕГН на гражданин и поверителна служебна информация</span></li>
+                <li class="option"><span class="option-marker">Г</span><span class="option-text">Общ въпрос за значението на технически термин</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+    <script>
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btn = document.querySelector('.btn-link');
+                btn.textContent = 'Копирано!';
+                setTimeout(() => { btn.textContent = 'Копирай линк'; }, 2000);
+            });
+        }
+
+        function toggleAnswers() {
+            document.body.classList.toggle('show-answers');
+            const btn = document.querySelector('.toolbar .btn-answers');
+            if (document.body.classList.contains('show-answers')) {
+                btn.textContent = 'Скрий верните отговори';
+            } else {
+                btn.textContent = 'Покажи верните отговори';
+            }
+        }
+
+        function downloadPdf(withAnswers) {
+            if (withAnswers) {
+                document.body.classList.add('show-answers');
+            } else {
+                document.body.classList.remove('show-answers');
+            }
+
+            const filename = withAnswers
+                ? 'Входен_изпит_с_отговори.pdf'
+                : 'Входен_изпит.pdf';
+
+            const element = document.querySelector('.exam');
+
+            html2pdf()
+                .set({
+                    margin: [15, 12, 15, 12],
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css'] },
+                })
+                .from(element)
+                .save();
+        }
+    </script>
+</body>
+</html>
